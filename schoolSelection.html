@@ -6,43 +6,83 @@
     <title>School Selection</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        /* General Styles */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #800000;
+            background-color: #800000; /* Maroon */
             margin: 0;
             padding: 0;
             color: #fff;
             overflow-x: hidden;
         }
+
         h1, h2 {
             text-align: center;
             font-weight: 600;
         }
+
         h1 {
             font-size: 3rem;
             margin-top: 40px;
             text-transform: uppercase;
-            color: #FFD700;
+            color: #FFD700; /* Gold */
         }
+
         h2 {
             font-size: 1.5rem;
             margin-top: 20px;
-            color: #FFD700;
+            color: #FFD700; /* Gold */
         }
+
+        /* Special Code Input */
+        .special-code {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .special-code input {
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            width: 80%;
+            margin-bottom: 20px;
+            background-color: #fff;
+            color: #800000; /* Maroon */
+        }
+
+        .special-code button {
+            padding: 12px 30px;
+            font-size: 18px;
+            border: none;
+            background-color: #FFD700;
+            color: #800000;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .special-code button:hover {
+            background-color: #FFB900;
+        }
+
+        /* School Selection Form */
         .school-selection-container {
             text-align: center;
             margin-top: 40px;
         }
+
         .school-selection-container select {
             font-size: 18px;
             padding: 12px;
             border-radius: 5px;
             width: 50%;
             background-color: #fff;
-            color: #800000;
+            color: #800000; /* Maroon */
             border: none;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         .school-selection-container button {
             padding: 12px 30px;
             font-size: 18px;
@@ -54,27 +94,32 @@
             transition: background-color 0.3s ease;
             margin-top: 20px;
         }
+
         .school-selection-container button:hover {
             background-color: #FFB900;
         }
+
+        /* Arrow Styles */
         .arrow {
             position: fixed;
             top: 20px;
             right: 20px;
-            width: 30px;
-            height: 30px;
-            background-color: #FFD700;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            font-size: 30px;
+            color: #FFD700; /* Same gold as on the index.html */
             cursor: pointer;
-            display: none;
+            display: none; /* Initially hidden */
         }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
             }
+
             h2 {
                 font-size: 1.2rem;
             }
+
             .school-selection-container select {
                 width: 80%;
             }
@@ -96,42 +141,39 @@
         <!-- Dropdown for School Selection -->
         <select id="schoolDropdown">
             <option value="" disabled selected>Select a school</option>
-            <!-- List of All MCPS High Schools -->
-            <option value="Bethesda-Chevy Chase High School">Bethesda-Chevy Chase High School</option>
-            <option value="Montgomery Blair High School">Montgomery Blair High School</option>
-            <option value="James Hubert Blake High School">James Hubert Blake High School</option>
-            <option value="Winston Churchill High School">Winston Churchill High School</option>
+            <option value="Albert Einstein High School">Albert Einstein High School</option>
+            <option value="B-CC High School">Bethesda-Chevy Chase High School</option>
+            <option value="Blake High School">Blake High School</option>
             <option value="Clarksburg High School">Clarksburg High School</option>
             <option value="Damascus High School">Damascus High School</option>
-            <option value="Thomas Edison High School of Technology">Thomas Edison High School of Technology</option>
-            <option value="Albert Einstein High School">Albert Einstein High School</option>
+            <option value="Einstein High School">Einstein High School</option>
             <option value="Gaithersburg High School">Gaithersburg High School</option>
-            <option value="Walter Johnson High School">Walter Johnson High School</option>
-            <option value="John F. Kennedy High School">John F. Kennedy High School</option>
-            <option value="Col. Zadok Magruder High School">Col. Zadok Magruder High School</option>
-            <option value="Richard Montgomery High School">Richard Montgomery High School</option>
-            <option value="Northwest High School">Northwest High School</option>
-            <option value="Northwood High School">Northwood High School</option>
+            <option value="Blair High School">Montgomery Blair High School</option>
+            <option value="Magruder High School">Magruder High School</option>
             <option value="Paint Branch High School">Paint Branch High School</option>
-            <option value="Poolesville High School">Poolesville High School</option>
-            <option value="Quince Orchard High School">Quince Orchard High School</option>
+            <option value="Richard Montgomery High School">Richard Montgomery High School</option>
             <option value="Rockville High School">Rockville High School</option>
-            <option value="Seneca Valley High School">Seneca Valley High School</option>
             <option value="Sherwood High School">Sherwood High School</option>
             <option value="Springbrook High School">Springbrook High School</option>
-            <option value="Watkins Mill High School">Watkins Mill High School</option>
             <option value="Wheaton High School">Wheaton High School</option>
-            <option value="Walt Whitman High School">Walt Whitman High School</option>
-            <option value="Thomas S. Wootton High School">Thomas S. Wootton High School</option>
+            <option value="Walter Johnson High School">Walter Johnson High School</option>
+            <option value="Jesse Boyd High School">Jesse Boyd High School</option>
+            <option value="Northwood High School">Northwood High School</option>
+            <option value="Seneca Valley High School">Seneca Valley High School</option>
+            <option value="Watkins Mill High School">Watkins Mill High School</option>
+            <option value="John F. Kennedy High School">John F. Kennedy High School</option>
+            <option value="Seneca Valley High School">Seneca Valley High School</option>
+            <option value="Wootton High School">Wootton High School</option>
         </select>
 
         <button onclick="goToGameSelection()">Select School</button>
     </div>
 
     <!-- Arrow Element -->
-    <div class="arrow" id="arrow" onclick="arrowClick()"></div>
+    <div class="arrow" id="arrow" onclick="arrowClick()">➡</div>
 
     <script>
+        // Special Privilege Code Check
         function checkCode() {
             const code = document.getElementById('privilegeCode').value;
             if (code === '2273') {
@@ -143,20 +185,23 @@
             }
         }
 
+        // If the code is already entered, ensure arrow is visible when the page loads
         window.onload = function() {
             if (localStorage.getItem('specialCodeEntered') === 'true') {
                 document.getElementById('arrow').style.display = 'block';  // Show the arrow
             }
         }
 
+        // Arrow click function (Redirect to games.html page)
         function arrowClick() {
-            alert("Navigating the website!");
-            // Implement your navigation logic here
+            window.location.href = "games.html";  // Redirect to games.html
         }
 
+        // Handle school selection
         function goToGameSelection() {
             const selectedSchool = document.getElementById('schoolDropdown').value;
             if (selectedSchool) {
+                // Redirect to the games.html page, passing schoolName as a query parameter
                 window.location.href = "games.html?school=" + selectedSchool;
             } else {
                 alert("Please select a school.");
