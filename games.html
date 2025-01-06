@@ -53,40 +53,31 @@
             background-color: #555;
         }
 
-        /* Box with logos to click and apply */
-        .logo-selection-box {
-            display: flex;
-            justify-content: space-between;
+        /* Admin Game Creation Form */
+        .create-game-container {
+            display: none; /* Initially hidden */
+            text-align: center;
             margin-top: 20px;
-            flex-wrap: wrap;
         }
-        .logo-selection-box img {
-            width: 80px;
-            height: 80px;
+
+        .create-game-container input, .create-game-container select {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .create-game-container button {
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #800000;
+            color: #FFD700;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            margin: 10px;
-            border-radius: 50%;
-            border: 2px solid #ddd;
         }
 
-        .apply-logos {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-        .logo-spot {
-            width: 80px;
-            height: 80px;
-            margin: 10px;
-            display: inline-block;
-            border: 2px dashed #ddd;
-            border-radius: 50%;
-            position: relative;
-        }
-
-        .logo-spot img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
+        .create-game-container button:hover {
+            background-color: #FFB900;
         }
 
         /* Arrow Styles */
@@ -114,55 +105,39 @@
 </head>
 <body>
 
-<!-- Admin check simulation, assuming you are the admin -->
-<script>
-    const isAdmin = true; // Change to true if you're testing as the admin
+<h1>Select Your Game to Bet On</h1>
 
-    if (!isAdmin) {
-        document.getElementById('admin-logo-selection').style.display = 'none';
+<!-- Admin Check -->
+<script>
+    const specialCode = prompt("Enter special code to access admin features:");
+    let isAdmin = false;
+
+    if (specialCode === "2273") {
+        isAdmin = true;
+        localStorage.setItem('isAdmin', 'true');
+    } else {
+        localStorage.setItem('isAdmin', 'false');
+    }
+
+    // If admin, display the game creation form
+    if (isAdmin || localStorage.getItem('isAdmin') === 'true') {
+        document.getElementById('createGameContainer').style.display = 'block';
     }
 </script>
 
-<div class="container">
-    <!-- Game 1 -->
-    <div class="game-card">
-        <div class="apply-logos">
-            <h4>Select Logos</h4>
-            <div class="logo-spot" onclick="selectLogo('home')">
-                <img id="home-logo" src="https://via.placeholder.com/80?text=Home" alt="Home Team Logo">
-            </div>
-            <div class="logo-spot" onclick="selectLogo('away')">
-                <img id="away-logo" src="https://via.placeholder.com/80?text=Away" alt="Away Team Logo">
-            </div>
-        </div>
-        <h3>Paint Branch vs. Rockville</h3>
-        <p>Football - 7:00 PM</p>
-        <button class="bet-now-btn" onclick="placeBet('Paint Branch vs Rockville')">Bet Now</button>
-    </div>
-
-    <!-- Game 2 -->
-    <div class="game-card">
-        <div class="apply-logos">
-            <h4>Select Logos</h4>
-            <div class="logo-spot" onclick="selectLogo('home-2')">
-                <img id="home-logo-2" src="https://via.placeholder.com/80?text=Home" alt="Home Team Logo">
-            </div>
-            <div class="logo-spot" onclick="selectLogo('away-2')">
-                <img id="away-logo-2" src="https://via.placeholder.com/80?text=Away" alt="Away Team Logo">
-            </div>
-        </div>
-        <h3>Wootton vs. Blair</h3>
-        <p>Basketball - 6:30 PM</p>
-        <button class="bet-now-btn" onclick="placeBet('Wootton vs Blair')">Bet Now</button>
-    </div>
+<!-- Game List -->
+<div class="container" id="gameContainer">
+    <!-- Games will be dynamically loaded here -->
 </div>
 
-<!-- Logo Selection Box for Admin -->
-<div class="logo-selection-box" id="admin-logo-selection">
-    <!-- Admin logos, can be clicked for applying logos -->
-    <img src="https://imgur.com/d4pwZ5N.png" alt="Logo 1" onclick="pickImage('https://imgur.com/d4pwZ5N.png')">
-    <img src="https://imgur.com/sNa2qMI.png" alt="Logo 2" onclick="pickImage('https://imgur.com/sNa2qMI.png')">
-    <!-- More logos here... -->
+<!-- Admin Game Creation Form -->
+<div class="create-game-container" id="createGameContainer">
+    <h2>Create a New Game</h2>
+    <input type="text" id="school1" placeholder="Enter first school" />
+    <input type="text" id="school2" placeholder="Enter second school" />
+    <input type="text" id="sport" placeholder="Enter sport (e.g., Football)" />
+    <input type="datetime-local" id="gameTime" />
+    <button onclick="publishNewGame()">Publish Game</button>
 </div>
 
 <!-- Arrow Element -->
@@ -174,37 +149,52 @@
 <script>
     let selectedLogo = '';
 
-    // Function to pick an image and set it to a selected team spot
-    function pickImage(logoUrl) {
-        selectedLogo = logoUrl;
-        alert('Logo selected! Now click on a spot to apply it.');
+    // Function to create a new game (admin only)
+    function publishNewGame() {
+        const school1 = document.getElementById('school1').value;
+        const school2 = document.getElementById('school2').value;
+        const sport = document.getElementById('sport').value;
+        const gameTime = document.getElementById('gameTime').value;
+
+        if (school1 && school2 && sport && gameTime) {
+            const newGame = { school1, school2, sport, time: gameTime };
+
+            // Save new game to localStorage
+            let games = JSON.parse(localStorage.getItem('games')) || [];
+            games.push(newGame);
+            localStorage.setItem('games', JSON.stringify(games));
+
+            alert('New game published!');
+
+            // Refresh the game list
+            populateGameList(games);
+        } else {
+            alert('Please fill in all fields.');
+        }
     }
 
-    // Apply selected logo to home or away spot
-    function selectLogo(teamType) {
-        if (!selectedLogo) {
-            alert('Please select a logo first!');
-            return;
+    // Function to populate the list of games from localStorage
+    function populateGameList(games) {
+        const container = document.getElementById('gameContainer');
+        container.innerHTML = ''; // Clear existing games
+
+        if (games.length === 0) {
+            container.innerHTML = '<p>No games available yet.</p>';
         }
 
-        if (teamType === 'home') {
-            document.getElementById('home-logo').src = selectedLogo;
-        } else if (teamType === 'away') {
-            document.getElementById('away-logo').src = selectedLogo;
-        } else if (teamType === 'home-2') {
-            document.getElementById('home-logo-2').src = selectedLogo;
-        } else if (teamType === 'away-2') {
-            document.getElementById('away-logo-2').src = selectedLogo;
-        }
-
-        selectedLogo = ''; // Reset after applying the logo
+        games.forEach(game => {
+            const gameCard = document.createElement('div');
+            gameCard.classList.add('game-card');
+            gameCard.innerHTML = `
+                <h3>${game.school1} vs ${game.school2}</h3>
+                <p>${game.sport} - ${new Date(game.time).toLocaleString()}</p>
+                <button class="bet-now-btn" onclick="placeBet('${game.school1} vs ${game.school2}')">Bet Now</button>
+            `;
+            container.appendChild(gameCard);
+        });
     }
 
-    // For admin only: toggle the logo selection view
-    if (isAdmin) {
-        document.querySelectorAll('.logo-selection-box').forEach(item => item.style.display = 'flex');
-    }
-
+    // Function to place a bet
     function placeBet(game) {
         alert("You selected the game: " + game + ". Redirecting to the betting page.");
         window.location.href = "bets.html";
@@ -219,6 +209,12 @@
     function backArrowClick() {
         window.history.back();  // Go back to the previous page
     }
+
+    // Load games from localStorage on page load
+    window.onload = function() {
+        const games = JSON.parse(localStorage.getItem('games')) || [];
+        populateGameList(games);
+    };
 </script>
 
 </body>
