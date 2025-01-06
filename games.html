@@ -88,6 +88,28 @@
             height: 80px;
             border-radius: 50%;
         }
+
+        /* Arrow Styles */
+        .arrow {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            color: #FFD700; /* Gold */
+            cursor: pointer;
+            display: none; /* Initially hidden */
+        }
+
+        /* Back Arrow Styles */
+        .back-arrow {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 30px;
+            color: #FFD700; /* Gold */
+            cursor: pointer;
+            display: none; /* Initially hidden */
+        }
     </style>
 </head>
 <body>
@@ -137,31 +159,24 @@
 
 <!-- Logo Selection Box for Admin -->
 <div class="logo-selection-box" id="admin-logo-selection">
+    <!-- Admin logos, can be clicked for applying logos -->
     <img src="https://imgur.com/d4pwZ5N.png" alt="Logo 1" onclick="pickImage('https://imgur.com/d4pwZ5N.png')">
     <img src="https://imgur.com/sNa2qMI.png" alt="Logo 2" onclick="pickImage('https://imgur.com/sNa2qMI.png')">
-    <img src="https://imgur.com/qHTaffH.png" alt="Logo 3" onclick="pickImage('https://imgur.com/qHTaffH.png')">
-    <img src="https://imgur.com/looRfSS.png" alt="Logo 4" onclick="pickImage('https://imgur.com/looRfSS.png')">
-    <img src="https://imgur.com/mo5NEXy.png" alt="Logo 5" onclick="pickImage('https://imgur.com/mo5NEXy.png')">
-    <img src="https://imgur.com/BprSInD.png" alt="Logo 6" onclick="pickImage('https://imgur.com/BprSInD.png')">
-    <img src="https://imgur.com/Pf2ovvM.png" alt="Logo 7" onclick="pickImage('https://imgur.com/Pf2ovvM.png')">
-    <img src="https://imgur.com/F3X0ykx.png" alt="Logo 8" onclick="pickImage('https://imgur.com/F3X0ykx.png')">
-    <img src="https://imgur.com/jvwuNdG.png" alt="Logo 9" onclick="pickImage('https://imgur.com/jvwuNdG.png')">
-    <img src="https://imgur.com/7kYzcmI.png" alt="Logo 10" onclick="pickImage('https://imgur.com/7kYzcmI.png')">
-    <img src="https://imgur.com/CePBhzG.png" alt="Logo 11" onclick="pickImage('https://imgur.com/CePBhzG.png')">
-    <img src="https://imgur.com/SMyb1AV.png" alt="Logo 12" onclick="pickImage('https://imgur.com/SMyb1AV.png')">
-    <img src="https://imgur.com/iPkg4p1.png" alt="Logo 13" onclick="pickImage('https://imgur.com/iPkg4p1.png')">
-    <img src="https://imgur.com/JbcLFTy.png" alt="Logo 14" onclick="pickImage('https://imgur.com/JbcLFTy.png')">
-    <img src="https://imgur.com/iLcQULE.png" alt="Logo 15" onclick="pickImage('https://imgur.com/iLcQULE.png')">
-    <img src="https://imgur.com/zdJ740k.png" alt="Logo 16" onclick="pickImage('https://imgur.com/zdJ740k.png')">
-    <img src="https://imgur.com/QaT43Fd.png" alt="Logo 17" onclick="pickImage('https://imgur.com/QaT43Fd.png')">
-    <img src="https://imgur.com/wBf35uv.png" alt="Logo 18" onclick="pickImage('https://imgur.com/wBf35uv.png')">
-    <img src="https://imgur.com/pkZguUx.png" alt="Logo 19" onclick="pickImage('https://imgur.com/pkZguUx.png')">
-    <img src="https://imgur.com/jCLl6Ii.png" alt="Logo 20" onclick="pickImage('https://imgur.com/jCLl6Ii.png')">
-    <img src="https://imgur.com/ubXKxbm.png" alt="Logo 21" onclick="pickImage('https://imgur.com/ubXKxbm.png')">
-    <img src="https://imgur.com/HQ7LFtH.png" alt="Logo 22" onclick="pickImage('https://imgur.com/HQ7LFtH.png')">
-    <img src="https://imgur.com/kxmIYLN.png" alt="Logo 23" onclick="pickImage('https://imgur.com/kxmIYLN.png')">
-    <img src="https://imgur.com/friGPD8.png" alt="Logo 24" onclick="pickImage('https://imgur.com/friGPD8.png')">
+    <!-- More logos here... -->
 </div>
+
+<!-- Special Privilege Code -->
+<div class="special-code">
+    <h2>Founder Privilege</h2>
+    <input type="text" id="privilegeCode" placeholder="Enter your code">
+    <button onclick="checkCode()">Enter Code</button>
+</div>
+
+<!-- Arrow Element -->
+<div class="arrow" id="arrow" onclick="arrowClick()">➡</div>
+
+<!-- Back Arrow Element -->
+<div class="back-arrow" id="backArrow" onclick="backArrowClick()">⬅</div>
 
 <script>
     let selectedLogo = '';
@@ -200,6 +215,37 @@
     function placeBet(game) {
         alert("You selected the game: " + game + ". Redirecting to the betting page.");
         window.location.href = "bets.html";
+    }
+
+    // Special Privilege Code Check
+    function checkCode() {
+        const code = document.getElementById('privilegeCode').value;
+        if (code === '2273') {
+            alert("Special access granted. You are the founder!");
+            document.getElementById('arrow').style.display = 'block';  // Show the arrow
+            document.getElementById('backArrow').style.display = 'block';  // Show the back arrow
+            localStorage.setItem('specialCodeEntered', 'true');  // Store in localStorage
+        } else {
+            alert("Invalid code.");
+        }
+    }
+
+    // If the code is already entered, ensure the arrows are visible when the page loads
+    window.onload = function() {
+        if (localStorage.getItem('specialCodeEntered') === 'true') {
+            document.getElementById('arrow').style.display = 'block';  // Show the forward arrow
+            document.getElementById('backArrow').style.display = 'block';  // Show the back arrow
+        }
+    }
+
+    // Arrow click function (Redirect to bets.html page)
+    function arrowClick() {
+        window.location.href = "bets.html";  // Redirect to bets.html
+    }
+
+    // Back Arrow click function (Go back to the previous page)
+    function backArrowClick() {
+        window.history.back();  // Go back to the previous page
     }
 </script>
 

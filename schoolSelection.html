@@ -103,9 +103,19 @@
         .arrow {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px; /* Position the back arrow to the left */
             font-size: 30px;
             color: #FFD700; /* Same gold as on the index.html */
+            cursor: pointer;
+            display: none; /* Initially hidden */
+        }
+
+        .forward-arrow {
+            position: fixed;
+            top: 20px;
+            right: 20px; /* Forward arrow on the right */
+            font-size: 30px;
+            color: #FFD700;
             cursor: pointer;
             display: none; /* Initially hidden */
         }
@@ -169,8 +179,11 @@
         <button onclick="goToGameSelection()">Select School</button>
     </div>
 
-    <!-- Arrow Element -->
-    <div class="arrow" id="arrow" onclick="arrowClick()">➡</div>
+    <!-- Back Arrow (appears after entering 2273) -->
+    <div id="backArrow" class="arrow" onclick="goBack()">⬅</div>
+
+    <!-- Forward Arrow (appears after entering 2273) -->
+    <div id="forwardArrow" class="forward-arrow" onclick="goToGames()">➡</div>
 
     <script>
         // Special Privilege Code Check
@@ -178,23 +191,30 @@
             const code = document.getElementById('privilegeCode').value;
             if (code === '2273') {
                 alert("Special access granted. You are the founder!");
-                document.getElementById('arrow').style.display = 'block';  // Show the arrow
+                document.getElementById('backArrow').style.display = 'block';  // Show the back arrow
+                document.getElementById('forwardArrow').style.display = 'block';  // Show the forward arrow
                 localStorage.setItem('specialCodeEntered', 'true');  // Store in localStorage
             } else {
                 alert("Invalid code.");
             }
         }
 
-        // If the code is already entered, ensure arrow is visible when the page loads
+        // If the code is already entered, ensure arrows are visible when the page loads
         window.onload = function() {
             if (localStorage.getItem('specialCodeEntered') === 'true') {
-                document.getElementById('arrow').style.display = 'block';  // Show the arrow
+                document.getElementById('backArrow').style.display = 'block';  // Show the back arrow
+                document.getElementById('forwardArrow').style.display = 'block';  // Show the forward arrow
             }
         }
 
-        // Arrow click function (Redirect to games.html page)
-        function arrowClick() {
-            window.location.href = "games.html";  // Redirect to games.html
+        // Function to handle back arrow click
+        function goBack() {
+            window.history.back();  // Go to the previous page
+        }
+
+        // Function to handle forward arrow click
+        function goToGames() {
+            window.location.href = "games.html";  // Go to the games page
         }
 
         // Handle school selection
