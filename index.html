@@ -157,11 +157,7 @@
     <div class="arrow" id="arrow"></div>
 
     <script>
-        // Special Privilege Code (Example: 2273 to bypass login)
         const specialCode = "2273";
-
-        // Password validation regex
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
 
         // Show/Hide password toggle function
         function togglePassword() {
@@ -180,49 +176,24 @@
         function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const enteredCode = document.getElementById('privilegeCode').value;
 
-            // Validate the email format
-            if (!validateEmail(username)) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-
-            // Validate password
-            if (!passwordRegex.test(password)) {
-                alert('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
-                return;
-            }
-
-            // Check if entered special code matches the stored special code
-            if (enteredCode === specialCode) {
-                // Show arrow on success
-                localStorage.setItem("specialCodeEntered", "true");
-                document.getElementById('arrow').style.display = "block";
-                alert('Special Privileges Activated!');
-                window.location.href = "schoolSelection.html";  // Go to the school selection page
-            } else if (username && password) {
+            if (username && password) {
                 alert('Login successful!');
-                window.location.href = "schoolSelection.html";  // Go to the school selection page
+                window.location.href = "schoolSelection.html"; // Redirect to school selection page
             } else {
                 alert('Please enter both email and password.');
             }
         }
 
-        // Validate email format
-        function validateEmail(email) {
-            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return regex.test(email);
-        }
-
-        // Enter Code to show the arrow
         function enterCode() {
-            const enteredCode = document.getElementById('privilegeCode').value;
+            const enteredCode = document.getElementById('privilegeCode').value.trim(); // Ensure no leading/trailing spaces
             if (enteredCode === specialCode) {
                 localStorage.setItem("specialCodeEntered", "true");
                 document.getElementById('arrow').style.display = "block";
+                alert('Special Privileges Activated!');
+                window.location.href = "schoolSelection.html"; // Redirect on success
             } else {
-                alert("Invalid code!");
+                alert('Invalid code!');
             }
         }
 
