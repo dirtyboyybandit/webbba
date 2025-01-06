@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Game to Bet On</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .game-card {
+            width: 30%;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .game-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .game-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .game-card p {
+            font-size: 16px;
+            color: #555;
+        }
+        .game-card .bet-now-btn {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #800000; /* Maroon */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .game-card .bet-now-btn:hover {
+            background-color: #555;
+        }
+
+        /* Box with logos to click and apply */
+        .logo-selection-box {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .logo-selection-box img {
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+
+        .apply-logos {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .logo-spot {
+            width: 80px;
+            height: 80px;
+            margin: 10px;
+            display: inline-block;
+            border: 2px dashed #ddd;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .logo-spot img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Admin check simulation, assuming you are the admin -->
+<script>
+    const isAdmin = true; // Change to true if you're testing as the admin
+
+    if (!isAdmin) {
+        document.getElementById('admin-logo-selection').style.display = 'none';
+    }
+</script>
+
+<div class="container">
+    <!-- Game 1 -->
+    <div class="game-card">
+        <div class="apply-logos">
+            <h4>Select Logos</h4>
+            <div class="logo-spot" onclick="selectLogo('home')">
+                <img id="home-logo" src="https://via.placeholder.com/80?text=Home" alt="Home Team Logo">
+            </div>
+            <div class="logo-spot" onclick="selectLogo('away')">
+                <img id="away-logo" src="https://via.placeholder.com/80?text=Away" alt="Away Team Logo">
+            </div>
+        </div>
+        <h3>Paint Branch vs. Rockville</h3>
+        <p>Football - 7:00 PM</p>
+        <button class="bet-now-btn" onclick="placeBet('Paint Branch vs Rockville')">Bet Now</button>
+    </div>
+
+    <!-- Game 2 -->
+    <div class="game-card">
+        <div class="apply-logos">
+            <h4>Select Logos</h4>
+            <div class="logo-spot" onclick="selectLogo('home-2')">
+                <img id="home-logo-2" src="https://via.placeholder.com/80?text=Home" alt="Home Team Logo">
+            </div>
+            <div class="logo-spot" onclick="selectLogo('away-2')">
+                <img id="away-logo-2" src="https://via.placeholder.com/80?text=Away" alt="Away Team Logo">
+            </div>
+        </div>
+        <h3>Wootton vs. Blair</h3>
+        <p>Basketball - 6:30 PM</p>
+        <button class="bet-now-btn" onclick="placeBet('Wootton vs Blair')">Bet Now</button>
+    </div>
+</div>
+
+<!-- Logo Selection Box for Admin -->
+<div class="logo-selection-box" id="admin-logo-selection">
+    <img src="https://imgur.com/d4pwZ5N.png" alt="Logo 1" onclick="pickImage('https://imgur.com/d4pwZ5N.png')">
+    <img src="https://imgur.com/sNa2qMI.png" alt="Logo 2" onclick="pickImage('https://imgur.com/sNa2qMI.png')">
+    <img src="https://imgur.com/qHTaffH.png" alt="Logo 3" onclick="pickImage('https://imgur.com/qHTaffH.png')">
+    <img src="https://imgur.com/looRfSS.png" alt="Logo 4" onclick="pickImage('https://imgur.com/looRfSS.png')">
+    <img src="https://imgur.com/mo5NEXy.png" alt="Logo 5" onclick="pickImage('https://imgur.com/mo5NEXy.png')">
+    <img src="https://imgur.com/BprSInD.png" alt="Logo 6" onclick="pickImage('https://imgur.com/BprSInD.png')">
+    <img src="https://imgur.com/Pf2ovvM.png" alt="Logo 7" onclick="pickImage('https://imgur.com/Pf2ovvM.png')">
+    <img src="https://imgur.com/F3X0ykx.png" alt="Logo 8" onclick="pickImage('https://imgur.com/F3X0ykx.png')">
+    <img src="https://imgur.com/jvwuNdG.png" alt="Logo 9" onclick="pickImage('https://imgur.com/jvwuNdG.png')">
+    <img src="https://imgur.com/7kYzcmI.png" alt="Logo 10" onclick="pickImage('https://imgur.com/7kYzcmI.png')">
+    <img src="https://imgur.com/CePBhzG.png" alt="Logo 11" onclick="pickImage('https://imgur.com/CePBhzG.png')">
+    <img src="https://imgur.com/SMyb1AV.png" alt="Logo 12" onclick="pickImage('https://imgur.com/SMyb1AV.png')">
+    <img src="https://imgur.com/iPkg4p1.png" alt="Logo 13" onclick="pickImage('https://imgur.com/iPkg4p1.png')">
+    <img src="https://imgur.com/JbcLFTy.png" alt="Logo 14" onclick="pickImage('https://imgur.com/JbcLFTy.png')">
+    <img src="https://imgur.com/iLcQULE.png" alt="Logo 15" onclick="pickImage('https://imgur.com/iLcQULE.png')">
+    <img src="https://imgur.com/zdJ740k.png" alt="Logo 16" onclick="pickImage('https://imgur.com/zdJ740k.png')">
+    <img src="https://imgur.com/QaT43Fd.png" alt="Logo 17" onclick="pickImage('https://imgur.com/QaT43Fd.png')">
+    <img src="https://imgur.com/wBf35uv.png" alt="Logo 18" onclick="pickImage('https://imgur.com/wBf35uv.png')">
+    <img src="https://imgur.com/pkZguUx.png" alt="Logo 19" onclick="pickImage('https://imgur.com/pkZguUx.png')">
+    <img src="https://imgur.com/jCLl6Ii.png" alt="Logo 20" onclick="pickImage('https://imgur.com/jCLl6Ii.png')">
+    <img src="https://imgur.com/ubXKxbm.png" alt="Logo 21" onclick="pickImage('https://imgur.com/ubXKxbm.png')">
+    <img src="https://imgur.com/HQ7LFtH.png" alt="Logo 22" onclick="pickImage('https://imgur.com/HQ7LFtH.png')">
+    <img src="https://imgur.com/kxmIYLN.png" alt="Logo 23" onclick="pickImage('https://imgur.com/kxmIYLN.png')">
+    <img src="https://imgur.com/friGPD8.png" alt="Logo 24" onclick="pickImage('https://imgur.com/friGPD8.png')">
+</div>
+
+<script>
+    let selectedLogo = '';
+
+    // Function to pick an image and set it to a selected team spot
+    function pickImage(logoUrl) {
+        selectedLogo = logoUrl;
+        alert('Logo selected! Now click on a spot to apply it.');
+    }
+
+    // Apply selected logo to home or away spot
+    function selectLogo(teamType) {
+        if (!selectedLogo) {
+            alert('Please select a logo first!');
+            return;
+        }
+
+        if (teamType === 'home') {
+            document.getElementById('home-logo').src = selectedLogo;
+        } else if (teamType === 'away') {
+            document.getElementById('away-logo').src = selectedLogo;
+        } else if (teamType === 'home-2') {
+            document.getElementById('home-logo-2').src = selectedLogo;
+        } else if (teamType === 'away-2') {
+            document.getElementById('away-logo-2').src = selectedLogo;
+        }
+
+        selectedLogo = ''; // Reset after applying the logo
+    }
+
+    // For admin only: toggle the logo selection view
+    if (isAdmin) {
+        document.querySelectorAll('.logo-selection-box').forEach(item => item.style.display = 'flex');
+    }
+
+    function placeBet(game) {
+        alert("You selected the game: " + game + ". Redirecting to the betting page.");
+        window.location.href = "bets.html";
+    }
+</script>
+
+</body>
+</html>

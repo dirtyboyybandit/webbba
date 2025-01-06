@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Your Bet</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #800000;
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background-color: #FFD700;
+            padding: 40px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        input, button {
+            font-size: 18px;
+            padding: 12px;
+            width: 80%;
+            max-width: 400px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .stripe-button {
+            background-color: #6772e5;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .footer {
+            color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Place Your Bet</h1>
+
+        <!-- Display game info passed from the previous page -->
+        <h2 id="game-info"></h2>
+        <p id="game-time"></p>
+
+        <form id="bet-form">
+            <label for="bet-amount">Amount to Bet:</label>
+            <input type="number" id="bet-amount" placeholder="Enter amount to bet" required />
+
+            <div id="card-element">
+                <!-- Stripe Card Element will be inserted here -->
+            </div>
+
+            <button type="submit" class="stripe-button">Place Bet</button>
+        </form>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Paint Branch Bets</p>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const game = urlParams.get('game');
+        const team1 = urlParams.get('team1');
+        const team2 = urlParams.get('team2');
+        const date = urlParams.get('date');
+        const time = urlParams.get('time');
+
+        document.getElementById("game-info").textContent = `${team1} vs ${team2} - ${game.charAt(0).toUpperCase() + game.slice(1)} Game`;
+        document.getElementById("game-time").textContent = `Date: ${date} | Time: ${time}`;
+
+        const stripe = Stripe('pk_test_51QdhMIEFe1rFVd8R5cR9hmRR27YJv1OtFpXA2DNTnuyAhYQkuXpb5owP7lKTM6kM06LuACtbq8aTEMkfF2svif28008Vnh8HUU');
+        const elements = stripe.elements();
+
+        const cardElement = elements.create('card');
+        cardElement.mount('#card-element');
+
+        const form = document.getElementById('bet-form');
+        const betAmountInput = document.getElementById('bet-amount');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const betAmount = betAmountInput.value;
+
+            if (!betAmount || isNaN(betAmount) || betAmount <= 0) {
+                alert("Please enter a valid amount to bet.");
+                return;
+            }
+
+            const {token, error} = await stripe.createToken(cardElement);
+
+            if (error) {
+                alert(error.message);
+            } else {
+                // Send the token to your server for payment processing
+                fetch('/charge', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        token: token.id,
+                        betAmount: betAmount,
+                        game: game,
+                        team1: team1,
+                        team2: team2,
+                        date: date,
+                        time: time
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Bet placed successfully!');
+                        // Redirect to a confirmation page
+                        window.location.href = 'confirmation.html'; // Placeholder for confirmation page
+                    } else {
+                        alert('Payment failed. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    alert('An error occurred. Please try again.');
+                    console.error('Error:', error);
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
