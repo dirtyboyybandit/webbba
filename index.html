@@ -141,7 +141,7 @@
     </div>
 
     <!-- Arrow -->
-    <div class="arrow" id="arrow" onclick="goToSchoolSelection()">➡</div>
+    <div class="arrow" id="arrow" onclick="goToGames()">➡</div>
 
     <script>
         const specialCode = "2273";
@@ -176,23 +176,17 @@
             const enteredCode = document.getElementById('privilegeCode').value.trim(); // Ensure no leading/trailing spaces
             if (enteredCode === specialCode) {
                 document.getElementById('arrow').style.display = "block"; // Show the arrow
+                localStorage.setItem('userCode', '2273'); // Store user as admin
                 alert('Special Privileges Activated!');
             } else {
+                localStorage.removeItem('userCode'); // Clear any stored admin privileges
                 alert('Invalid code!');
             }
         }
 
         // Show the arrow only after the correct code has been entered
-        function checkSpecialCode() {
-            const enteredCode = localStorage.getItem("specialCodeEntered");
-            if (enteredCode === "true") {
-                document.getElementById('arrow').style.display = "block";
-            }
-        }
-
-        // Redirect to the schoolSelection.html page when arrow is clicked
-        function goToSchoolSelection() {
-            window.location.href = "schoolSelection.html";
+        function goToGames() {
+            window.location.href = "games.html";
         }
     </script>
 
