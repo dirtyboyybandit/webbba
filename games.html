@@ -53,169 +53,97 @@
             background-color: #555;
         }
 
-        /* Admin Game Creation Form */
-        .create-game-container {
-            display: none; /* Initially hidden */
-            text-align: center;
+        /* Game creation form */
+        .game-creation-form {
             margin-top: 20px;
+            display: none; /* Hidden by default, shown for admin */
         }
-
-        .create-game-container input, .create-game-container select {
-            margin: 10px;
+        .game-creation-form input, .game-creation-form button {
+            margin: 10px 0;
             padding: 10px;
+            width: 100%;
             font-size: 16px;
-        }
-
-        .create-game-container button {
-            padding: 12px 20px;
-            font-size: 16px;
-            background-color: #800000;
-            color: #FFD700;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .create-game-container button:hover {
-            background-color: #FFB900;
-        }
-
-        /* Arrow Styles */
-        .arrow {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            font-size: 30px;
-            color: #FFD700; /* Gold */
-            cursor: pointer;
-            display: none; /* Initially hidden */
-        }
-
-        /* Back Arrow Styles */
-        .back-arrow {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 30px;
-            color: #FFD700; /* Gold */
-            cursor: pointer;
-            display: none; /* Initially hidden */
         }
     </style>
 </head>
 <body>
 
-<h1>Select Your Game to Bet On</h1>
-
-<!-- Admin Check -->
 <script>
-    const specialCode = prompt("Enter special code to access admin features:");
-    let isAdmin = false;
+    const isAdmin = localStorage.getItem('userCode') === '2273'; // Check if user entered the code 2273
 
-    if (specialCode === "2273") {
-        isAdmin = true;
-        localStorage.setItem('isAdmin', 'true');
-    } else {
-        localStorage.setItem('isAdmin', 'false');
+    // Show the game creation form for admin
+    if (isAdmin) {
+        document.getElementById('game-creation-form').style.display = 'block';
     }
 
-    // If admin, display the game creation form
-    if (isAdmin || localStorage.getItem('isAdmin') === 'true') {
-        document.getElementById('createGameContainer').style.display = 'block';
-    }
-</script>
-
-<!-- Game List -->
-<div class="container" id="gameContainer">
-    <!-- Games will be dynamically loaded here -->
-</div>
-
-<!-- Admin Game Creation Form -->
-<div class="create-game-container" id="createGameContainer">
-    <h2>Create a New Game</h2>
-    <input type="text" id="school1" placeholder="Enter first school" />
-    <input type="text" id="school2" placeholder="Enter second school" />
-    <input type="text" id="sport" placeholder="Enter sport (e.g., Football)" />
-    <input type="datetime-local" id="gameTime" />
-    <button onclick="publishNewGame()">Publish Game</button>
-</div>
-
-<!-- Arrow Element -->
-<div class="arrow" id="arrow" onclick="arrowClick()">➡</div>
-
-<!-- Back Arrow Element -->
-<div class="back-arrow" id="backArrow" onclick="backArrowClick()">⬅</div>
-
-<script>
-    let selectedLogo = '';
-
-    // Function to create a new game (admin only)
-    function publishNewGame() {
-        const school1 = document.getElementById('school1').value;
-        const school2 = document.getElementById('school2').value;
+    // Function to create a new game
+    function createGame() {
+        const homeTeam = document.getElementById('home-team').value;
+        const awayTeam = document.getElementById('away-team').value;
         const sport = document.getElementById('sport').value;
-        const gameTime = document.getElementById('gameTime').value;
+        const gameTime = document.getElementById('game-time').value;
 
-        if (school1 && school2 && sport && gameTime) {
-            const newGame = { school1, school2, sport, time: gameTime };
+        if (homeTeam && awayTeam && sport && gameTime) {
+            // Create a new game card
+            const newGameCard = document.createElement('div');
+            newGameCard.classList.add('game-card');
 
-            // Save new game to localStorage
-            let games = JSON.parse(localStorage.getItem('games')) || [];
-            games.push(newGame);
-            localStorage.setItem('games', JSON.stringify(games));
-
-            alert('New game published!');
-
-            // Refresh the game list
-            populateGameList(games);
-        } else {
-            alert('Please fill in all fields.');
-        }
-    }
-
-    // Function to populate the list of games from localStorage
-    function populateGameList(games) {
-        const container = document.getElementById('gameContainer');
-        container.innerHTML = ''; // Clear existing games
-
-        if (games.length === 0) {
-            container.innerHTML = '<p>No games available yet.</p>';
-        }
-
-        games.forEach(game => {
-            const gameCard = document.createElement('div');
-            gameCard.classList.add('game-card');
-            gameCard.innerHTML = `
-                <h3>${game.school1} vs ${game.school2}</h3>
-                <p>${game.sport} - ${new Date(game.time).toLocaleString()}</p>
-                <button class="bet-now-btn" onclick="placeBet('${game.school1} vs ${game.school2}')">Bet Now</button>
+            // Add game details to the card
+            newGameCard.innerHTML = `
+                <h3>${homeTeam} vs. ${awayTeam}</h3>
+                <p>${sport} - ${gameTime}</p>
+                <button class="bet-now-btn" onclick="placeBet('${homeTeam} vs. ${awayTeam}')">Bet Now</button>
             `;
-            container.appendChild(gameCard);
-        });
+
+            // Append the new game card to the container
+            document.getElementById('game-container').appendChild(newGameCard);
+
+            // Clear the form inputs
+            document.getElementById('home-team').value = '';
+            document.getElementById('away-team').value = '';
+            document.getElementById('sport').value = '';
+            document.getElementById('game-time').value = '';
+        } else {
+            alert("Please fill in all fields to create a game.");
+        }
     }
 
-    // Function to place a bet
     function placeBet(game) {
         alert("You selected the game: " + game + ". Redirecting to the betting page.");
         window.location.href = "bets.html";
     }
-
-    // Arrow click function (Redirect to bets.html page)
-    function arrowClick() {
-        window.location.href = "bets.html";  // Redirect to bets.html
-    }
-
-    // Back Arrow click function (Go back to the previous page)
-    function backArrowClick() {
-        window.history.back();  // Go back to the previous page
-    }
-
-    // Load games from localStorage on page load
-    window.onload = function() {
-        const games = JSON.parse(localStorage.getItem('games')) || [];
-        populateGameList(games);
-    };
 </script>
+
+<h1>Select Your Game to Bet On</h1>
+
+<div class="container" id="game-container">
+    <!-- Existing games will go here -->
+    <div class="game-card">
+        <h3>Paint Branch vs. Rockville</h3>
+        <p>Football - 7:00 PM</p>
+        <button class="bet-now-btn" onclick="placeBet('Paint Branch vs Rockville')">Bet Now</button>
+    </div>
+
+    <div class="game-card">
+        <h3>Wootton vs. Blair</h3>
+        <p>Basketball - 6:30 PM</p>
+        <button class="bet-now-btn" onclick="placeBet('Wootton vs Blair')">Bet Now</button>
+    </div>
+</div>
+
+<!-- Game creation form (for admin) -->
+<div class="game-creation-form" id="game-creation-form">
+    <h2>Create a New Game</h2>
+    <label for="home-team">Home Team:</label>
+    <input type="text" id="home-team" placeholder="Enter Home Team Name">
+    <label for="away-team">Away Team:</label>
+    <input type="text" id="away-team" placeholder="Enter Away Team Name">
+    <label for="sport">Sport:</label>
+    <input type="text" id="sport" placeholder="Enter Sport">
+    <label for="game-time">Game Time:</label>
+    <input type="text" id="game-time" placeholder="Enter Game Time (e.g., 7:00 PM)">
+    <button onclick="createGame()">Update</button>
+</div>
 
 </body>
 </html>
