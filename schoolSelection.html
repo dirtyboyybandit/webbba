@@ -34,38 +34,6 @@
             color: #FFD700; /* Gold */
         }
 
-        /* Special Code Input */
-        .special-code {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .special-code input {
-            padding: 15px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            width: 80%;
-            margin-bottom: 20px;
-            background-color: #fff;
-            color: #800000; /* Maroon */
-        }
-
-        .special-code button {
-            padding: 12px 30px;
-            font-size: 18px;
-            border: none;
-            background-color: #FFD700;
-            color: #800000;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .special-code button:hover {
-            background-color: #FFB900;
-        }
-
         /* School Selection Form */
         .school-selection-container {
             text-align: center;
@@ -138,13 +106,6 @@
 </head>
 <body>
 
-    <!-- Special Privilege Code -->
-    <div class="special-code">
-        <h2>Founder Privilege</h2>
-        <input type="text" id="privilegeCode" placeholder="Enter your code">
-        <button onclick="checkCode()">Enter Code</button>
-    </div>
-
     <h1>Select Your School</h1>
 
     <div class="school-selection-container">
@@ -179,26 +140,13 @@
         <button onclick="goToGameSelection()">Select School</button>
     </div>
 
-    <!-- Back Arrow (appears after entering 2273) -->
+    <!-- Back Arrow -->
     <div id="backArrow" class="arrow" onclick="goBack()">⬅</div>
 
-    <!-- Forward Arrow (appears after entering 2273) -->
+    <!-- Forward Arrow -->
     <div id="forwardArrow" class="forward-arrow" onclick="goToGames()">➡</div>
 
     <script>
-        // Special Privilege Code Check
-        function checkCode() {
-            const code = document.getElementById('privilegeCode').value;
-            if (code === '2273') {
-                alert("Special access granted. You are the founder!");
-                document.getElementById('backArrow').style.display = 'block';  // Show the back arrow
-                document.getElementById('forwardArrow').style.display = 'block';  // Show the forward arrow
-                localStorage.setItem('specialCodeEntered', 'true');  // Store in localStorage
-            } else {
-                alert("Invalid code.");
-            }
-        }
-
         // If the code is already entered, ensure arrows are visible when the page loads
         window.onload = function() {
             if (localStorage.getItem('specialCodeEntered') === 'true') {

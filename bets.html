@@ -45,9 +45,23 @@
             color: #fff;
             margin-top: 20px;
         }
+
+        /* Left Arrow Style */
+        .left-arrow {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 30px;
+            color: #FFD700; /* Gold */
+            cursor: pointer;
+            display: none; /* Initially hidden */
+        }
     </style>
 </head>
 <body>
+
+    <!-- Left Arrow -->
+    <div class="left-arrow" id="leftArrow" onclick="goBack()">⬅</div>
 
     <div class="container">
         <h1>Place Your Bet</h1>
@@ -73,6 +87,17 @@
     </div>
 
     <script>
+        // Display the left arrow if needed
+        window.onload = function() {
+            // You can add any condition here to show the left arrow
+            document.getElementById('leftArrow').style.display = 'block'; // Show the left arrow
+        }
+
+        // Left arrow click function (Navigate back to the previous page)
+        function goBack() {
+            window.history.back();  // Go to the previous page
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         const game = urlParams.get('game');
         const team1 = urlParams.get('team1');
