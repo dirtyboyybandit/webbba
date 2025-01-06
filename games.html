@@ -165,13 +165,6 @@
     <!-- More logos here... -->
 </div>
 
-<!-- Special Privilege Code -->
-<div class="special-code">
-    <h2>Founder Privilege</h2>
-    <input type="text" id="privilegeCode" placeholder="Enter your code">
-    <button onclick="checkCode()">Enter Code</button>
-</div>
-
 <!-- Arrow Element -->
 <div class="arrow" id="arrow" onclick="arrowClick()">➡</div>
 
@@ -215,27 +208,6 @@
     function placeBet(game) {
         alert("You selected the game: " + game + ". Redirecting to the betting page.");
         window.location.href = "bets.html";
-    }
-
-    // Special Privilege Code Check
-    function checkCode() {
-        const code = document.getElementById('privilegeCode').value;
-        if (code === '2273') {
-            alert("Special access granted. You are the founder!");
-            document.getElementById('arrow').style.display = 'block';  // Show the arrow
-            document.getElementById('backArrow').style.display = 'block';  // Show the back arrow
-            localStorage.setItem('specialCodeEntered', 'true');  // Store in localStorage
-        } else {
-            alert("Invalid code.");
-        }
-    }
-
-    // If the code is already entered, ensure the arrows are visible when the page loads
-    window.onload = function() {
-        if (localStorage.getItem('specialCodeEntered') === 'true') {
-            document.getElementById('arrow').style.display = 'block';  // Show the forward arrow
-            document.getElementById('backArrow').style.display = 'block';  // Show the back arrow
-        }
     }
 
     // Arrow click function (Redirect to bets.html page)
