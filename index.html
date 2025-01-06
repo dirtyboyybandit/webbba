@@ -99,7 +99,7 @@
             display: inline-block;
         }
 
-        /* Arrow style */
+        /* Arrow styles */
         .arrow {
             position: fixed;
             top: 20px;
@@ -107,7 +107,7 @@
             width: 30px;
             height: 30px;
             background-color: #fbc02d;
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
             cursor: pointer;
             display: none; /* Hidden by default */
         }
@@ -154,7 +154,7 @@
     </div>
 
     <!-- Arrow -->
-    <div class="arrow" id="arrow"></div>
+    <div class="arrow" id="arrow" onclick="arrowClick()"></div>
 
     <script>
         const specialCode = "2273";
@@ -189,7 +189,7 @@
             const enteredCode = document.getElementById('privilegeCode').value.trim(); // Ensure no leading/trailing spaces
             if (enteredCode === specialCode) {
                 localStorage.setItem("specialCodeEntered", "true");
-                document.getElementById('arrow').style.display = "block";
+                document.getElementById('arrow').style.display = "block"; // Make the arrow visible
                 alert('Special Privileges Activated!');
                 window.location.href = "schoolSelection.html"; // Redirect on success
             } else {
@@ -200,6 +200,12 @@
         // Show the arrow if special code has been entered previously
         if (localStorage.getItem("specialCodeEntered") === "true") {
             document.getElementById('arrow').style.display = "block";
+        }
+
+        // Arrow click functionality
+        function arrowClick() {
+            alert("Arrow clicked!");
+            // You can add your desired functionality here (like bypassing login)
         }
     </script>
 

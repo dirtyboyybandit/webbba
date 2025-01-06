@@ -133,46 +133,39 @@
     <!-- Special Privilege Code -->
     <div class="special-code">
         <h2>Founder Privilege</h2>
-        <input type="text" id="privilegeCode" placeholder="Enter your code">
-        <button onclick="checkCode()">Enter Code</button>
+        <input type="text" id="privilegeCode" placeholder="Enter Special Privilege Code" />
+        <button onclick="checkCode()">Activate Privilege</button>
     </div>
 
-    <h1>Select Your School</h1>
-
+    <!-- School Selection Form -->
     <div class="school-selection-container">
-        <!-- Dropdown for School Selection -->
+        <h1>Select Your School</h1>
         <select id="schoolDropdown">
-            <option value="" disabled selected>Select a school</option>
-            <!-- List of All MCPS High Schools -->
+            <option value="">Select School</option>
+            <!-- List of MCPS High Schools -->
             <option value="Albert Einstein High School">Albert Einstein High School</option>
-            <option value="B-CC High School">Bethesda-Chevy Chase High School</option>
-            <option value="Blake High School">Blake High School</option>
+            <option value="Blair High School">Blair High School</option>
+            <option value="Bethesda-Chevy Chase High School">Bethesda-Chevy Chase High School</option>
+            <option value="C. Richard Montgomery High School">C. Richard Montgomery High School</option>
+            <option value="Churchill High School">Churchill High School</option>
             <option value="Clarksburg High School">Clarksburg High School</option>
             <option value="Damascus High School">Damascus High School</option>
             <option value="Einstein High School">Einstein High School</option>
             <option value="Gaithersburg High School">Gaithersburg High School</option>
-            <option value="Blair High School">Montgomery Blair High School</option>
+            <option value="Walter Johnson High School">Walter Johnson High School</option>
             <option value="Magruder High School">Magruder High School</option>
-            <option value="Paint Branch High School">Paint Branch High School</option>
-            <option value="Richard Montgomery High School">Richard Montgomery High School</option>
+            <option value="Montgomery Blair High School">Montgomery Blair High School</option>
+            <option value="Northwood High School">Northwood High School</option>
             <option value="Rockville High School">Rockville High School</option>
+            <option value="Seneca Valley High School">Seneca Valley High School</option>
             <option value="Sherwood High School">Sherwood High School</option>
             <option value="Springbrook High School">Springbrook High School</option>
             <option value="Wheaton High School">Wheaton High School</option>
-            <option value="Walter Johnson High School">Walter Johnson High School</option>
-            <option value="Jesse Boyd High School">Jesse Boyd High School</option>
-            <option value="Northwood High School">Northwood High School</option>
-            <option value="Seneca Valley High School">Seneca Valley High School</option>
-            <option value="Watkins Mill High School">Watkins Mill High School</option>
-            <option value="John F. Kennedy High School">John F. Kennedy High School</option>
-            <option value="Seneca Valley High School">Seneca Valley High School</option>
-            <option value="Wootton High School">Wootton High School</option>
         </select>
-
-        <button onclick="goToGameSelection()">Select School</button>
+        <button onclick="goToGameSelection()">Continue</button>
     </div>
 
-    <!-- Arrow Element -->
+    <!-- Arrow -->
     <div class="arrow" id="arrow" onclick="arrowClick()"></div>
 
     <script>
