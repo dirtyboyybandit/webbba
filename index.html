@@ -88,26 +88,13 @@
             font-size: 16px;
         }
 
-        /* Show/Hide password button */
-        .show-password-btn {
-            cursor: pointer;
-            background-color: #9c1f2d;
-            border: none;
-            color: #fbc02d;
-            font-size: 14px;
-            margin-top: 10px;
-            display: inline-block;
-        }
-
-        /* Arrow styles */
+        /* Arrow style */
         .arrow {
             position: fixed;
             top: 20px;
             right: 20px;
-            width: 30px;
-            height: 30px;
-            background-color: #fbc02d;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            font-size: 30px;
+            color: #fbc02d;  /* Gold */
             cursor: pointer;
             display: none; /* Hidden by default */
         }
@@ -154,7 +141,7 @@
     </div>
 
     <!-- Arrow -->
-    <div class="arrow" id="arrow" onclick="arrowClick()"></div>
+    <div class="arrow" id="arrow" onclick="goToSchoolSelection()">➡</div>
 
     <script>
         const specialCode = "2273";
@@ -189,23 +176,21 @@
             const enteredCode = document.getElementById('privilegeCode').value.trim(); // Ensure no leading/trailing spaces
             if (enteredCode === specialCode) {
                 localStorage.setItem("specialCodeEntered", "true");
-                document.getElementById('arrow').style.display = "block"; // Make the arrow visible
+                document.getElementById('arrow').style.display = "block"; // Show the arrow
                 alert('Special Privileges Activated!');
-                window.location.href = "schoolSelection.html"; // Redirect on success
             } else {
                 alert('Invalid code!');
             }
         }
 
-        // Show the arrow if special code has been entered previously
+        // Show the arrow only after the correct code has been entered
         if (localStorage.getItem("specialCodeEntered") === "true") {
             document.getElementById('arrow').style.display = "block";
         }
 
-        // Arrow click functionality
-        function arrowClick() {
-            alert("Arrow clicked!");
-            // You can add your desired functionality here (like bypassing login)
+        // Redirect to the schoolSelection.html page when arrow is clicked
+        function goToSchoolSelection() {
+            window.location.href = "schoolSelection.html";
         }
     </script>
 
