@@ -6,7 +6,6 @@
     <title>Games</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* General Styles */
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #800000; /* Maroon */
@@ -45,33 +44,16 @@
             background-color: #FFB900;
         }
 
-        .create-game-form {
-            display: none; /* Initially hidden */
-            margin-top: 40px;
-        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
 
-        .create-game-form input {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            margin: 10px;
-            width: 80%;
+            .game-container button {
+                width: 80%;
+            }
         }
-
-        .create-game-form button {
-            padding: 12px 30px;
-            font-size: 18px;
-            border: none;
-            background-color: #FFD700;
-            color: #800000;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .create-game-form button:hover {
-            background-color: #FFB900;
-        }
-
     </style>
 </head>
 <body>
@@ -79,59 +61,30 @@
     <h1>Games</h1>
 
     <div class="game-container">
-        <!-- Displaying games will be handled here -->
         <h2>Published Games</h2>
-        <!-- Sample Game List (Dynamic Content Should Appear Here) -->
-        <div id="gameList">
-            <!-- Published games will be shown here for regular users -->
+        <div id="gameList"></div>
+
+        <!-- "Create Game" button will only be visible to privileged users -->
+        <div id="createGameButtonContainer" style="display:none;">
+            <button onclick="window.location.href='create_game.html'">Create a New Game</button>
         </div>
     </div>
 
-    <div id="createGameForm" class="create-game-form">
-        <!-- Form to create a game -->
-        <h2>Create a New Game</h2>
-        <input type="text" id="team1" placeholder="Enter Team 1">
-        <input type="text" id="team2" placeholder="Enter Team 2">
-        <input type="text" id="sport" placeholder="Enter Sport">
-        <input type="datetime-local" id="gameTime" placeholder="Select Date and Time">
-        <button onclick="createGame()">Publish Game</button>
-    </div>
-
     <script>
-        // When the page loads, check if the school selection has been made
         window.onload = function() {
-            // If the user has selected their school (from schoolSelection.html), hide the "Create a Game" form
-            if (localStorage.getItem('schoolSelected') === 'true') {
-                document.getElementById('createGameForm').style.display = 'none'; // Hide create game section
-                loadPublishedGames(); // Show only published games
-            } else {
-                // Show the "Create a Game" form if school has not been selected
-                document.getElementById('createGameForm').style.display = 'block';
-                loadPublishedGames();  // Load published games for users who haven't selected a school
+            // Retrieve user code from localStorage
+            const userCode = localStorage.getItem('userCode');
+
+            // If the user code is '2273', display the "Create a New Game" button
+            if (userCode === '2273') {
+                document.getElementById('createGameButtonContainer').style.display = 'block';
             }
-        }
 
-        // Function to handle game creation
-        function createGame() {
-            const team1 = document.getElementById('team1').value;
-            const team2 = document.getElementById('team2').value;
-            const sport = document.getElementById('sport').value;
-            const gameTime = document.getElementById('gameTime').value;
+            // Load published games for everyone
+            loadPublishedGames();
+        };
 
-            if (team1 && team2 && sport && gameTime) {
-                // Save the game data (can be stored in localStorage, a database, or server-side)
-                const game = { team1, team2, sport, gameTime };
-                alert("Game created successfully!");
-                // For simplicity, reload the page or perform other actions to update the UI
-                window.location.reload();
-            } else {
-                alert("Please fill in all fields!");
-            }
-        }
-
-        // Function to load and display published games for users who can't create games
         function loadPublishedGames() {
-            // Here you would dynamically display the list of games (this is just an example)
             const games = [
                 { team1: "Team A", team2: "Team B", sport: "Football", gameTime: "2025-01-10T15:00:00" },
                 { team1: "Team C", team2: "Team D", sport: "Basketball", gameTime: "2025-01-12T18:00:00" }
@@ -149,10 +102,8 @@
             });
         }
 
-        // Function to place a bet (this is just a placeholder)
         function placeBet() {
             alert("Redirecting to betting page...");
-            // Actual implementation to redirect to the betting page would go here
         }
     </script>
 
