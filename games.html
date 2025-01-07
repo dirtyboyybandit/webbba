@@ -72,6 +72,10 @@
             background-color: #FFB900;
         }
 
+        .published-games {
+            display: block;
+        }
+
     </style>
 </head>
 <body>
@@ -82,7 +86,7 @@
         <!-- Displaying games will be handled here -->
         <h2>Published Games</h2>
         <!-- Sample Game List (Dynamic Content Should Appear Here) -->
-        <div id="gameList">
+        <div id="gameList" class="published-games">
             <!-- Published games will be shown here for regular users -->
         </div>
     </div>
@@ -100,12 +104,14 @@
     <script>
         // When the page loads, check if the special code has been entered
         window.onload = function() {
-            // If the user has entered the special code (2273) on index.html, they can create games
+            // If the user has entered the special code (2273) on index.html, hide the Published Games section
             if (localStorage.getItem('specialCodeEntered') === 'true') {
+                // Hide the Published Games section
+                document.getElementById('gameList').style.display = 'none';
                 // Show the "Create a Game" form
                 document.getElementById('createGameForm').style.display = 'block';
             } else {
-                // Hide the "Create a Game" form if the code was not entered
+                // If code was not entered, show the Published Games section
                 document.getElementById('createGameForm').style.display = 'none';
                 loadPublishedGames();  // Load published games for regular users
             }
