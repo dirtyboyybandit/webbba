@@ -164,6 +164,7 @@
 
             if (username && password) {
                 alert('Login successful!');
+                localStorage.setItem('userLoggedIn', 'true'); // Store logged-in status
                 window.location.href = "schoolSelection.html"; // Redirect to school selection page
             } else {
                 alert('Please enter both email and password.');
