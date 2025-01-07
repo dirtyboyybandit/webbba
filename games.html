@@ -72,10 +72,6 @@
             background-color: #FFB900;
         }
 
-        .published-games {
-            display: block;
-        }
-
     </style>
 </head>
 <body>
@@ -86,7 +82,7 @@
         <!-- Displaying games will be handled here -->
         <h2>Published Games</h2>
         <!-- Sample Game List (Dynamic Content Should Appear Here) -->
-        <div id="gameList" class="published-games">
+        <div id="gameList">
             <!-- Published games will be shown here for regular users -->
         </div>
     </div>
@@ -102,18 +98,16 @@
     </div>
 
     <script>
-        // When the page loads, check if the special code has been entered
+        // When the page loads, check if the school selection has been made
         window.onload = function() {
-            // If the user has entered the special code (2273) on index.html, hide the Published Games section
-            if (localStorage.getItem('specialCodeEntered') === 'true') {
-                // Hide the Published Games section
-                document.getElementById('gameList').style.display = 'none';
-                // Show the "Create a Game" form
-                document.getElementById('createGameForm').style.display = 'block';
+            // If the user has selected their school (from schoolSelection.html), hide the "Create a Game" form
+            if (localStorage.getItem('schoolSelected') === 'true') {
+                document.getElementById('createGameForm').style.display = 'none'; // Hide create game section
+                loadPublishedGames(); // Show only published games
             } else {
-                // If code was not entered, show the Published Games section
-                document.getElementById('createGameForm').style.display = 'none';
-                loadPublishedGames();  // Load published games for regular users
+                // Show the "Create a Game" form if school has not been selected
+                document.getElementById('createGameForm').style.display = 'block';
+                loadPublishedGames();  // Load published games for users who haven't selected a school
             }
         }
 
@@ -127,14 +121,15 @@
             if (team1 && team2 && sport && gameTime) {
                 // Save the game data (can be stored in localStorage, a database, or server-side)
                 const game = { team1, team2, sport, gameTime };
-                // In a real-world scenario, save this data to a server or database
                 alert("Game created successfully!");
+                // For simplicity, reload the page or perform other actions to update the UI
+                window.location.reload();
             } else {
                 alert("Please fill in all fields!");
             }
         }
 
-        // Function to load and display published games for regular users
+        // Function to load and display published games for users who can't create games
         function loadPublishedGames() {
             // Here you would dynamically display the list of games (this is just an example)
             const games = [
