@@ -112,5 +112,49 @@
             window.location.href = "games.html";
         }
     </script>
+  <div id="liveUserCount" style="position: fixed; top: 10px; right: 10px; background-color: #FFD700; color: #800000; padding: 10px; border-radius: 5px; font-size: 18px;">
+    Users Online: 0
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
+<script>
+    // Firebase configuration (replace with your own Firebase config)
+    const firebaseConfig = {
+        apiKey: "your-api-key",
+        authDomain: "your-project-id.firebaseapp.com",
+        databaseURL: "https://your-project-id.firebaseio.com",
+        projectId: "your-project-id",
+        storageBucket: "your-project-id.appspot.com",
+        messagingSenderId: "your-sender-id",
+        appId: "your-app-id"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(app);
+    const userCountRef = db.ref("userCount");
+
+    // Update the live count display
+    userCountRef.on('value', (snapshot) => {
+        const count = snapshot.val() || 0;
+        document.getElementById('liveUserCount').innerText = `Users Online: ${count}`;
+    });
+
+    // Increment the user count when a user enters
+    window.onload = function() {
+        userCountRef.transaction((currentCount) => {
+            return (currentCount || 0) + 1;
+        });
+    };
+
+    // Decrement the user count when a user leaves
+    window.addEventListener('beforeunload', function() {
+        userCountRef.transaction((currentCount) => {
+            return (currentCount || 0) - 1;
+        });
+    });
+</script>
+
 </body>
 </html>
