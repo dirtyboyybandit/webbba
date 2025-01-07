@@ -6,117 +6,98 @@
     <title>Game Creation Tool</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #800000;
+            color: #fff;
+            text-align: center;
             padding: 20px;
-            background-color: #f4f4f4;
         }
 
         h1 {
+            color: #FFD700;
+        }
+
+        .form-container {
+            margin-top: 20px;
             text-align: center;
-            color: #333;
         }
 
-        form {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        label {
-            display: block;
-            margin: 15px 0 5px;
-            font-weight: bold;
-        }
-
-        input, select, button {
-            width: 100%;
+        input, button {
+            font-size: 1rem;
             padding: 10px;
-            margin: 5px 0 15px;
+            margin: 10px 0;
+            width: 100%;
+            border: none;
             border-radius: 5px;
-            border: 1px solid #ddd;
-            box-sizing: border-box;
+        }
+
+        input {
+            background-color: #fff;
+            color: #800000;
         }
 
         button {
-            background-color: #28a745;
-            color: white;
-            font-weight: bold;
-            border: none;
+            background-color: #FFD700;
+            color: #800000;
             cursor: pointer;
         }
 
         button:hover {
-            background-color: #218838;
+            background-color: #FFB900;
+        }
+
+        #arrow {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: #FFD700;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-<h1>Game Creation Tool</h1>
+    <!-- Arrow to go to adminGames.html -->
+    <div id="arrow" onclick="goToAdminGames()">→</div>
 
-<form id="gameForm">
-    <label for="team1">Team 1</label>
-    <input type="text" id="team1" placeholder="Enter Team 1 name" required>
+    <h1>Create a Game</h1>
+    <div class="form-container">
+        <input type="text" id="team1" placeholder="Enter Team 1 Name" />
+        <input type="text" id="team2" placeholder="Enter Team 2 Name" />
+        <input type="datetime-local" id="gameDate" placeholder="Enter Date & Time" />
+        <input type="text" id="sport" placeholder="Enter Sport" />
+        <button onclick="publishGame()">Publish Game</button>
+    </div>
 
-    <label for="team2">Team 2</label>
-    <input type="text" id="team2" placeholder="Enter Team 2 name" required>
-
-    <label for="sport">Sport</label>
-    <select id="sport" required>
-        <option value="" disabled selected>Select a sport</option>
-        <option value="Football">Football</option>
-        <option value="Basketball">Basketball</option>
-        <option value="Soccer">Soccer</option>
-        <option value="Baseball">Baseball</option>
-        <option value="Hockey">Hockey</option>
-    </select>
-
-    <label for="date">Date</label>
-    <input type="date" id="date" required>
-
-    <label for="time">Time</label>
-    <input type="time" id="time" required>
-
-    <button type="button" onclick="publishGame()">Publish Game</button>
-</form>
-
-<script>
-    function publishGame() {
-        // Gather form data
-        const team1 = document.getElementById('team1').value.trim();
-        const team2 = document.getElementById('team2').value.trim();
-        const sport = document.getElementById('sport').value;
-        const date = document.getElementById('date').value;
-        const time = document.getElementById('time').value;
-
-        if (team1 && team2 && sport && date && time) {
-            // Create a game object
-            const game = {
-                team1,
-                team2,
-                sport,
-                date,
-                time
-            };
-
-            // Retrieve current games from localStorage
-            const existingGames = JSON.parse(localStorage.getItem('games')) || [];
-            existingGames.push(game);
-
-            // Save the updated games list to localStorage
-            localStorage.setItem('games', JSON.stringify(existingGames));
-
-            alert('Game successfully published!');
-            document.getElementById('gameForm').reset(); // Clear the form
-        } else {
-            alert('Please fill out all fields.');
+    <script>
+        function goToAdminGames() {
+            window.location.href = "adminGames.html"; // Redirect to adminGames.html
         }
-    }
-</script>
+
+        function publishGame() {
+            const team1 = document.getElementById('team1').value;
+            const team2 = document.getElementById('team2').value;
+            const gameDate = document.getElementById('gameDate').value;
+            const sport = document.getElementById('sport').value;
+
+            if (team1 && team2 && gameDate && sport) {
+                const gameDetails = { team1, team2, gameDate, sport };
+
+                // Here, implement logic to store or display the game
+                // For example, sending it to a database or a file
+                alert('Game published successfully!');
+                console.log('Game Details:', gameDetails);
+                // Optionally, reset the form
+                document.getElementById('team1').value = '';
+                document.getElementById('team2').value = '';
+                document.getElementById('gameDate').value = '';
+                document.getElementById('sport').value = '';
+            } else {
+                alert('Please fill out all fields!');
+            }
+        }
+    </script>
 
 </body>
 </html>
