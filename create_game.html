@@ -58,10 +58,9 @@
 
     <script>
         window.onload = function() {
-            // Check admin status
             if (localStorage.getItem('isAdmin') !== 'true') {
                 alert("Unauthorized access!");
-                window.location.href = "index.html"; // Redirect to index if not admin
+                window.location.href = "index.html";
             }
         };
 
@@ -95,13 +94,9 @@
             // Save the updated games array back to localStorage
             localStorage.setItem('games', JSON.stringify(games));
 
-            // Logging for debugging
-            console.log('Game Published:', game);
-            console.log('All Games:', games);
-
             // Alert and redirect
             alert("Game published!");
-            window.location.href = "games.html"; // Redirect to games page
+            window.location.href = "games.html";
         }
     </script>
 </body>
