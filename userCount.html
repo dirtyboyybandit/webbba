@@ -3,32 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live User Count</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.28.2/dist/umd/supabase.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        #userCount {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            background-color: #f5f5f5;
-            padding: 10px;
-            border-radius: 5px;
-        }
-    </style>
+    <title>Real-Time User Count</title>
 </head>
 <body>
-    <div id="userCount">Users Online: 0</div>
+    <h1>Welcome to the Website</h1>
+    <p>Current Users Online: <span id="userCount">Loading...</span></p>
 
     <script>
-        // Initialize Google User Count code
+        // Function to update the real-time user count
         function updateUserCount(isEntering) {
             fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec', {
                 method: 'GET',
-                params: { isEntering }
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // Pass the action type: either entering or leaving
+                params: { isEntering: isEntering }
             })
             .then(response => response.text())
             .then(data => {
@@ -36,8 +26,11 @@
             });
         }
 
-        window.onload = () => updateUserCount(true); // User entered
-        window.onbeforeunload = () => updateUserCount(false); // User is leaving
+        // When the user enters the page
+        window.onload = () => updateUserCount(true);
+
+        // When the user leaves the page
+        window.onbeforeunload = () => updateUserCount(false);
     </script>
 </body>
 </html>
