@@ -86,8 +86,9 @@
 
             if (username && password) {
                 alert('Login successful!');
-                localStorage.setItem('isAdmin', 'false');
-                window.location.href = "schoolSelection.html";
+                localStorage.setItem('isAdmin', 'false'); // Regular user
+                localStorage.removeItem('privilegeCode'); // Remove any special code
+                window.location.href = "schoolSelection.html"; // Proceed to school selection
             } else {
                 alert('Please enter both username and password.');
             }
@@ -97,11 +98,13 @@
             const enteredCode = document.getElementById('privilegeCode').value.trim();
             if (enteredCode === specialCode) {
                 document.getElementById('arrow').style.display = "block";
-                localStorage.setItem('isAdmin', 'true');
+                localStorage.setItem('isAdmin', 'true'); // Special admin privileges
+                localStorage.setItem('privilegeCode', specialCode); // Store the special code
                 alert('Special Privileges Activated!');
             } else {
                 alert('Invalid code!');
                 localStorage.removeItem('isAdmin');
+                localStorage.removeItem('privilegeCode');
             }
         }
 
