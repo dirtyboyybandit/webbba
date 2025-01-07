@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Real-Time Time</title>
     <script>
-        // Function to update the time continuously
         function updateTime() {
-            const now = new Date(); // Get current time
+            const now = new Date();
             const options = { 
                 weekday: 'long', 
                 year: 'numeric', 
@@ -18,79 +17,36 @@
                 second: '2-digit', 
                 timeZoneName: 'short' 
             };
-            
             const timeString = now.toLocaleString('en-US', options);
             document.getElementById('current-time').innerHTML = timeString;
         }
-
-        // Call updateTime every second
-        setInterval(updateTime, 1000);
         
-        // Call once immediately to display time when the page loads
+        setInterval(updateTime, 1000);
         window.onload = updateTime;
     </script>
-  
 </head>
 <body>
     <h1>Live Real-Time Time</h1>
     <p id="current-time"></p>
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-time User Count</title>
-</head>
-<body>
-    <h1>Welcome to the Website</h1>
-    <p>Current Users Online: <span id="userCount">Loading...</span></p>
+
+    <div id="userCount" style="position: absolute; top: 10px; right: 10px; color: black; font-size: 18px;">
+        Users Online: 0
+    </div>
 
     <script>
-        // Initialize user count in localStorage if it doesn't exist
-        if (localStorage.getItem('userCount') === null) {
-            localStorage.setItem('userCount', 0);
+        function updateUserCount(isEntering) {
+            fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec', {
+                method: 'GET',
+                params: { isEntering }
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("userCount").innerText = "Users Online: " + data;
+            });
         }
 
-        // Update user count on page load
-        function updateUserCount() {
-            let count = parseInt(localStorage.getItem('userCount'));
-            count += 1;
-            localStorage.setItem('userCount', count);
-            document.getElementById('userCount').innerText = count;
-        }
-
-        // Update user count when user leaves the page
-        window.onbeforeunload = function() {
-            let count = parseInt(localStorage.getItem('userCount'));
-            count -= 1;
-            localStorage.setItem('userCount', count);
-        };
-
-        // Initialize the count when the page loads
-        updateUserCount();
+        window.onload = () => updateUserCount(true); // User entered
+        window.onbeforeunload = () => updateUserCount(false); // User is leaving
     </script>
-</body>
-  <div id="userCount" style="position: absolute; top: 10px; right: 10px; color: black; font-size: 18px;">
-    Users Online: 0
-</div>
-
-</html>
-<script>
-    function updateUserCount(isEntering) {
-        fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec', {
-            method: 'GET',
-            params: { isEntering }
-        })
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("userCount").innerText = "Users Online: " + data;
-        });
-    }
-
-    // To increment the user count when a user enters or exits the page
-    window.onload = () => updateUserCount(true); // User entered
-    window.onbeforeunload = () => updateUserCount(false); // User is leaving
-</script>
-
 </body>
 </html>

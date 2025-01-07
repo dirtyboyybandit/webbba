@@ -24,41 +24,20 @@
     <div id="userCount">Users Online: 0</div>
 
     <script>
-        // Initialize Supabase
-        const supabaseUrl = 'https://qrtikodjxlzohmkaazbi.supabase.co'; // Your Supabase URL
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFydGlrb2RqeGx6b2hta2FhemJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYyNzI4OTMsImV4cCI6MjA1MTg0ODg5M30.pVGWL3QQouej8HU9l2ANOcLolcktan5XhzuKGTRkad0'; // Your anon key
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-        // Function to fetch the current user count
-        async function fetchUserCount() {
-            const { data, error } = await supabase
-                .from('user_count')
-                .select('count')
-                .eq('id', 1) // Assuming the row ID where count is stored is 1
-                .single();
-
-            if (error) {
-                console.error("Error fetching user count:", error);
-            } else {
-                document.getElementById('userCount').innerText = `Users Online: ${data.count}`;
-            }
+        // Initialize Google User Count code
+        function updateUserCount(isEntering) {
+            fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec', {
+                method: 'GET',
+                params: { isEntering }
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("userCount").innerText = "Users Online: " + data;
+            });
         }
 
-        // Real-time subscription to listen for changes to the user_count table
-        supabase
-            .from('user_count')
-            .on('UPDATE', payload => {
-                fetchUserCount();
-            })
-            .subscribe();
-
-        // Initial fetch of user count when the page loads
-        fetchUserCount();
+        window.onload = () => updateUserCount(true); // User entered
+        window.onbeforeunload = () => updateUserCount(false); // User is leaving
     </script>
-  
 </body>
-  <div id="userCount" style="position: absolute; top: 10px; right: 10px; color: black; font-size: 18px;">
-    Users Online: 0
-</div>
-
 </html>

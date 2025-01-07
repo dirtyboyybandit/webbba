@@ -6,10 +6,9 @@
     <title>School Selection</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* General Styles */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #800000; /* Maroon */
+            background-color: #800000;
             margin: 0;
             padding: 0;
             color: #fff;
@@ -25,16 +24,15 @@
             font-size: 3rem;
             margin-top: 40px;
             text-transform: uppercase;
-            color: #FFD700; /* Gold */
+            color: #FFD700;
         }
 
         h2 {
             font-size: 1.5rem;
             margin-top: 20px;
-            color: #FFD700; /* Gold */
+            color: #FFD700;
         }
 
-        /* School Selection Form */
         .school-selection-container {
             text-align: center;
             margin-top: 40px;
@@ -46,7 +44,7 @@
             border-radius: 5px;
             width: 50%;
             background-color: #fff;
-            color: #800000; /* Maroon */
+            color: #800000;
             border: none;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -67,7 +65,6 @@
             background-color: #FFB900;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
@@ -88,7 +85,6 @@
     <h1>Select Your School</h1>
 
     <div class="school-selection-container">
-        <!-- Dropdown for School Selection -->
         <select id="schoolDropdown">
             <option value="" disabled selected>Select a school</option>
             <option value="Albert Einstein High School">Albert Einstein High School</option>
@@ -120,74 +116,36 @@
     </div>
 
     <script>
-        // Handle school selection
         function goToGameSelection() {
             const selectedSchool = document.getElementById('schoolDropdown').value;
+
             if (selectedSchool) {
-                // Redirect to the games.html page, passing schoolName as a query parameter
-                window.location.href = "games.html?school=" + selectedSchool;
+                localStorage.setItem('selectedSchool', selectedSchool);
+                window.location.href = "games.html";
             } else {
                 alert("Please select a school.");
             }
         }
     </script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-time User Count</title>
-</head>
-<body>
-    <h1>Welcome to the Website</h1>
-    <p>Current Users Online: <span id="userCount">Loading...</span></p>
+
+    <div id="userCount" style="position: absolute; top: 10px; right: 10px; color: black; font-size: 18px;">
+        Users Online: 0
+    </div>
 
     <script>
-        // Initialize user count in localStorage if it doesn't exist
-        if (localStorage.getItem('userCount') === null) {
-            localStorage.setItem('userCount', 0);
+        function updateUserCount(isEntering) {
+            fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec', {
+                method: 'GET',
+                params: { isEntering }
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("userCount").innerText = "Users Online: " + data;
+            });
         }
 
-        // Update user count on page load
-        function updateUserCount() {
-            let count = parseInt(localStorage.getItem('userCount'));
-            count += 1;
-            localStorage.setItem('userCount', count);
-            document.getElementById('userCount').innerText = count;
-        }
-
-        // Update user count when user leaves the page
-        window.onbeforeunload = function() {
-            let count = parseInt(localStorage.getItem('userCount'));
-            count -= 1;
-            localStorage.setItem('userCount', count);
-        };
-
-        // Initialize the count when the page loads
-        updateUserCount();
+        window.onload = () => updateUserCount(true); // User entered
+        window.onbeforeunload = () => updateUserCount(false); // User is leaving
     </script>
-</body>
-  <div id="userCount" style="position: absolute; top: 10px; right: 10px; color: black; font-size: 18px;">
-    Users Online: 0
-</div>
-
-</html>
-<script>
-    function updateUserCount(isEntering) {
-        fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec', {
-            method: 'GET',
-            params: { isEntering }
-        })
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("userCount").innerText = "Users Online: " + data;
-        });
-    }
-
-    // To increment the user count when a user enters or exits the page
-    window.onload = () => updateUserCount(true); // User entered
-    window.onbeforeunload = () => updateUserCount(false); // User is leaving
-</script>
-
 </body>
 </html>
