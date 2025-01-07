@@ -101,6 +101,7 @@
                 localStorage.setItem('isAdmin', 'true'); // Special admin privileges
                 localStorage.setItem('privilegeCode', specialCode); // Store the special code
                 alert('Special Privileges Activated!');
+                window.location.href = "gameCreation.html"; // Redirect to game creation page
             } else {
                 alert('Invalid code!');
                 localStorage.removeItem('isAdmin');

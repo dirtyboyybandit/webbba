@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Creation Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #800000;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-container input, .form-container textarea, .form-container button {
+            font-size: 1rem;
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .form-container input, .form-container textarea {
+            background-color: #fff;
+            color: #800000;
+        }
+
+        .form-container button {
+            background-color: #FFD700;
+            color: #800000;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #FFB900;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Creation Tool</h1>
+    <div class="form-container">
+        <input type="text" id="gameTitle" placeholder="Game Title" />
+        <textarea id="gameDescription" placeholder="Game Description" rows="4"></textarea>
+        <button onclick="publishGame()">Publish Game</button>
+    </div>
+
+    <script>
+        function publishGame() {
+            const gameTitle = document.getElementById('gameTitle').value;
+            const gameDescription = document.getElementById('gameDescription').value;
+
+            if (gameTitle && gameDescription) {
+                // Save game data to local storage or an API as needed
+                alert('Game Published Successfully!');
+                // Redirect to the game list or dashboard page
+                window.location.href = "games.html"; 
+            } else {
+                alert('Please fill in all fields!');
+            }
+        }
+    </script>
+</body>
+</html>
