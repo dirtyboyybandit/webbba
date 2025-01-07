@@ -13,46 +13,23 @@
             margin: 0;
             padding: 0;
             color: #fff;
-            overflow-x: hidden;
-        }
-
-        h1, h2 {
-            text-align: center;
-            font-weight: 600;
         }
 
         h1 {
+            text-align: center;
+            font-weight: 600;
             font-size: 3rem;
             margin-top: 40px;
             text-transform: uppercase;
             color: #FFD700; /* Gold */
         }
 
-        h2 {
-            font-size: 1.5rem;
-            margin-top: 20px;
-            color: #FFD700; /* Gold */
-        }
-
-        /* Game Creation Form */
-        .game-creation-container {
+        .game-container {
             text-align: center;
             margin-top: 40px;
         }
 
-        .game-creation-container input,
-        .game-creation-container select {
-            font-size: 18px;
-            padding: 12px;
-            border-radius: 5px;
-            width: 50%;
-            margin-bottom: 20px;
-            background-color: #fff;
-            color: #800000; /* Maroon */
-            border: none;
-        }
-
-        .game-creation-container button {
+        .game-container button {
             padding: 12px 30px;
             font-size: 18px;
             border: none;
@@ -64,43 +41,75 @@
             margin-top: 20px;
         }
 
-        .game-creation-container button:hover {
+        .game-container button:hover {
             background-color: #FFB900;
         }
+
+        .create-game-form {
+            display: none; /* Initially hidden */
+            margin-top: 40px;
+        }
+
+        .create-game-form input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin: 10px;
+            width: 80%;
+        }
+
+        .create-game-form button {
+            padding: 12px 30px;
+            font-size: 18px;
+            border: none;
+            background-color: #FFD700;
+            color: #800000;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .create-game-form button:hover {
+            background-color: #FFB900;
+        }
+
     </style>
 </head>
 <body>
 
-    <h1>Create a New Game</h1>
+    <h1>Games</h1>
 
-    <div id="gameCreationForm" class="game-creation-container">
-        <!-- Game Creation Form -->
-        <h2>Enter Game Details</h2>
-        <input type="text" id="team1" placeholder="Team 1 Name" required><br>
-        <input type="text" id="team2" placeholder="Team 2 Name" required><br>
-        <select id="sport" required>
-            <option value="" disabled selected>Select Sport</option>
-            <option value="Basketball">Basketball</option>
-            <option value="Football">Football</option>
-            <option value="Soccer">Soccer</option>
-            <option value="Baseball">Baseball</option>
-            <option value="Tennis">Tennis</option>
-        </select><br>
-        <input type="datetime-local" id="gameTime" required><br>
-        <button onclick="createGame()">Create Game</button>
+    <div class="game-container">
+        <!-- Displaying games will be handled here -->
+        <h2>Published Games</h2>
+        <!-- Sample Game List (Dynamic Content Should Appear Here) -->
+        <div id="gameList">
+            <!-- Published games will be shown here for regular users -->
+        </div>
+    </div>
+
+    <div id="createGameForm" class="create-game-form">
+        <!-- Form to create a game -->
+        <h2>Create a New Game</h2>
+        <input type="text" id="team1" placeholder="Enter Team 1">
+        <input type="text" id="team2" placeholder="Enter Team 2">
+        <input type="text" id="sport" placeholder="Enter Sport">
+        <input type="datetime-local" id="gameTime" placeholder="Select Date and Time">
+        <button onclick="createGame()">Publish Game</button>
     </div>
 
     <script>
-        // Check if the special code was entered
+        // When the page loads, check if the special code has been entered
         window.onload = function() {
-            if (localStorage.getItem('specialCodeEntered') !== 'true') {
-                // If code is not entered, redirect to a different page (e.g., home page or an error page)
-                window.location.href = 'error.html';  // You can create an error.html page or redirect them to another page
+            // If the user has entered the special code (2273) on index.html, they can create games
+            if (localStorage.getItem('specialCodeEntered') === 'true') {
+                // Show the "Create a Game" form
+                document.getElementById('createGameForm').style.display = 'block';
             } else {
-                // If code is entered, show the game creation form
-                document.getElementById('gameCreationForm').style.display = 'block';
+                // Hide the "Create a Game" form if the code was not entered
+                document.getElementById('createGameForm').style.display = 'none';
+                loadPublishedGames();  // Load published games for regular users
             }
-        };
+        }
 
         // Function to handle game creation
         function createGame() {
@@ -109,16 +118,40 @@
             const sport = document.getElementById('sport').value;
             const gameTime = document.getElementById('gameTime').value;
 
-            if (!team1 || !team2 || !sport || !gameTime) {
-                alert("Please fill in all the fields.");
-                return;
+            if (team1 && team2 && sport && gameTime) {
+                // Save the game data (can be stored in localStorage, a database, or server-side)
+                const game = { team1, team2, sport, gameTime };
+                // In a real-world scenario, save this data to a server or database
+                alert("Game created successfully!");
+            } else {
+                alert("Please fill in all fields!");
             }
+        }
 
-            // Logic to save the game (you can store it in a database or local storage)
-            alert("Game Created Successfully!");
+        // Function to load and display published games for regular users
+        function loadPublishedGames() {
+            // Here you would dynamically display the list of games (this is just an example)
+            const games = [
+                { team1: "Team A", team2: "Team B", sport: "Football", gameTime: "2025-01-10T15:00:00" },
+                { team1: "Team C", team2: "Team D", sport: "Basketball", gameTime: "2025-01-12T18:00:00" }
+            ];
 
-            // Redirect to the page where bets can be placed, or stay on this page if you want to allow more creations
-            // window.location.href = "bettingPage.html"; // Example redirect
+            const gameListDiv = document.getElementById('gameList');
+            games.forEach(game => {
+                const gameDiv = document.createElement('div');
+                gameDiv.innerHTML = `
+                    <p><strong>${game.team1}</strong> vs <strong>${game.team2}</strong></p>
+                    <p><i>${game.sport}</i> - ${new Date(game.gameTime).toLocaleString()}</p>
+                    <button onclick="placeBet()">Bet Now</button>
+                `;
+                gameListDiv.appendChild(gameDiv);
+            });
+        }
+
+        // Function to place a bet (this is just a placeholder)
+        function placeBet() {
+            alert("Redirecting to betting page...");
+            // Actual implementation to redirect to the betting page would go here
         }
     </script>
 
