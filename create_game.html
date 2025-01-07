@@ -49,84 +49,60 @@
 <body>
     <h1>Create Game</h1>
     <form onsubmit="publishGame(event)">
-        <input type="text" id="team1" placeholder="Enter Team 1">
-        <input type="text" id="team2" placeholder="Enter Team 2">
-        <input type="text" id="sport" placeholder="Enter Sport">
-        <input type="datetime-local" id="gameTime">
+        <input type="text" id="team1" placeholder="Enter Team 1" required>
+        <input type="text" id="team2" placeholder="Enter Team 2" required>
+        <input type="text" id="sport" placeholder="Enter Sport" required>
+        <input type="datetime-local" id="gameTime" required>
         <button type="submit">Publish Game</button>
     </form>
 
     <script>
         window.onload = function() {
+            // Check admin status
             if (localStorage.getItem('isAdmin') !== 'true') {
                 alert("Unauthorized access!");
-                window.location.href = "index.html";
+                window.location.href = "index.html"; // Redirect to index if not admin
             }
         };
 
         function publishGame(event) {
             event.preventDefault();
+
+            const team1 = document.getElementById('team1').value;
+            const team2 = document.getElementById('team2').value;
+            const sport = document.getElementById('sport').value;
+            const gameTime = document.getElementById('gameTime').value;
+
+            if (!team1 || !team2 || !sport || !gameTime) {
+                alert("Please fill out all fields.");
+                return;
+            }
+
+            // Create a game object
+            const game = {
+                team1: team1,
+                team2: team2,
+                sport: sport,
+                gameTime: gameTime
+            };
+
+            // Retrieve existing games from localStorage or create a new array if none exists
+            let games = JSON.parse(localStorage.getItem('games')) || [];
+
+            // Add the new game to the games array
+            games.push(game);
+
+            // Save the updated games array back to localStorage
+            localStorage.setItem('games', JSON.stringify(games));
+
+            // Logging for debugging
+            console.log('Game Published:', game);
+            console.log('All Games:', games);
+
+            // Alert and redirect
             alert("Game published!");
-            window.location.href = "games.html";
+            window.location.href = "games.html"; // Redirect to games page
         }
     </script>
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-time User Count</title>
-</head>
-<body>
-    <h1>Welcome to the Website</h1>
-    <p>Current Users Online: <span id="userCount">Loading...</span></p>
-
-    <script>
-        // Initialize user count in localStorage if it doesn't exist
-        if (localStorage.getItem('userCount') === null) {
-            localStorage.setItem('userCount', 0);
-        }
-
-        // Update user count on page load
-        function updateUserCount() {
-            let count = parseInt(localStorage.getItem('userCount'));
-            count += 1;
-            localStorage.setItem('userCount', count);
-            document.getElementById('userCount').innerText = count;
-        }
-
-        // Update user count when user leaves the page
-        window.onbeforeunload = function() {
-            let count = parseInt(localStorage.getItem('userCount'));
-            count -= 1;
-            localStorage.setItem('userCount', count);
-        };
-
-        // Initialize the count when the page loads
-        updateUserCount();
-    </script>
-</body>
-  <div id="userCount" style="position: absolute; top: 10px; right: 10px; color: black; font-size: 18px;">
-    Users Online: 0
-</div>
-
-</html>
-<script>
-    function updateUserCount(isEntering) {
-        fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec', {
-            method: 'GET',
-            params: { isEntering }
-        })
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("userCount").innerText = "Users Online: " + data;
-        });
-    }
-
-    // To increment the user count when a user enters or exits the page
-    window.onload = () => updateUserCount(true); // User entered
-    window.onbeforeunload = () => updateUserCount(false); // User is leaving
-</script>
-
 </body>
 </html>
