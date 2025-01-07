@@ -162,6 +162,50 @@
             }
         });
     </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+    // Initialize Supabase client
+    const supabaseUrl = 'https://qrtikodjxlzohmkaazbi.supabase.co';  // Your Supabase URL
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFydGlrb2RqeGx6b2hta2FhemJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYyNzI4OTMsImV4cCI6MjA1MTg0ODg5M30.pVGWL3QQouej8HU9l2ANOcLolcktan5XhzuKGTRkad0';  // Your Supabase anon key
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // Function to update the user count
+    async function updateUserCount(increment) {
+        const { data, error } = await supabase
+            .from('user_count')
+            .select('count')
+            .single();
+
+        if (error) {
+            console.error('Error fetching user count:', error);
+            return;
+        }
+
+        // Calculate the new count
+        let newCount = data.count + increment;
+        if (newCount < 0) newCount = 0; // Prevent negative count
+
+        // Update the count in Supabase
+        const { updateError } = await supabase
+            .from('user_count')
+            .update({ count: newCount })
+            .eq('id', 1);
+
+        if (updateError) {
+            console.error('Error updating user count:', updateError);
+        }
+    }
+
+    // Increment the count when the user visits the page
+    window.onload = () => {
+        updateUserCount(1); // Increment user count
+    };
+
+    // Decrement the count when the user leaves the page
+    window.onbeforeunload = () => {
+        updateUserCount(-1); // Decrement user count
+    };
+</script>
 
 </body>
 </html>
