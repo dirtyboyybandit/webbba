@@ -120,7 +120,7 @@
             const hasPrivileges = localStorage.getItem('userCode') === '2273';
             const createGameForm = document.getElementById('createGameForm');
 
-            // Hide the entire create game form if the user does not have privileges
+            // Show the "Create Game" section only if the user has privileges
             if (hasPrivileges) {
                 createGameForm.style.display = 'block';
             } else {
