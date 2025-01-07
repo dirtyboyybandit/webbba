@@ -9,45 +9,53 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #800000;
-            margin: 0;
-            padding: 0;
             color: #fff;
+            margin: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
         }
 
         h1 {
-            font-size: 3rem;
             color: #FFD700;
+            font-size: 2.5rem;
             margin-bottom: 20px;
         }
 
         .form-container {
-            text-align: center;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .form-container input, .form-container textarea, .form-container button {
-            font-size: 1rem;
-            padding: 10px;
-            margin: 10px 0;
-            width: 100%;
-            border: none;
-            border-radius: 5px;
-        }
-
-        .form-container input, .form-container textarea {
             background-color: #fff;
             color: #800000;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-container input, .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
         }
 
         .form-container button {
+            width: 100%;
             background-color: #FFD700;
             color: #800000;
+            border: none;
+            padding: 15px;
+            font-size: 1rem;
+            border-radius: 5px;
             cursor: pointer;
         }
 
@@ -57,27 +65,57 @@
     </style>
 </head>
 <body>
-    <h1>Game Creation Tool</h1>
-    <div class="form-container">
-        <input type="text" id="gameTitle" placeholder="Game Title" />
-        <textarea id="gameDescription" placeholder="Game Description" rows="4"></textarea>
-        <button onclick="publishGame()">Publish Game</button>
-    </div>
 
-    <script>
-        function publishGame() {
-            const gameTitle = document.getElementById('gameTitle').value;
-            const gameDescription = document.getElementById('gameDescription').value;
+<h1>Game Creation Tool</h1>
+<div class="form-container">
+    <label for="team1">Team 1:</label>
+    <input type="text" id="team1" placeholder="Enter Team 1 Name" required>
 
-            if (gameTitle && gameDescription) {
-                // Save game data to local storage or an API as needed
-                alert('Game Published Successfully!');
-                // Redirect to the game list or dashboard page
-                window.location.href = "games.html"; 
-            } else {
-                alert('Please fill in all fields!');
-            }
+    <label for="team2">Team 2:</label>
+    <input type="text" id="team2" placeholder="Enter Team 2 Name" required>
+
+    <label for="gameTime">Date and Time:</label>
+    <input type="datetime-local" id="gameTime" required>
+
+    <label for="sport">Sport:</label>
+    <input type="text" id="sport" placeholder="Enter Sport Name" required>
+
+    <button onclick="createGame()">Publish Game</button>
+</div>
+
+<script>
+    function createGame() {
+        const team1 = document.getElementById("team1").value.trim();
+        const team2 = document.getElementById("team2").value.trim();
+        const gameTime = document.getElementById("gameTime").value.trim();
+        const sport = document.getElementById("sport").value.trim();
+
+        if (team1 && team2 && gameTime && sport) {
+            const gameData = {
+                team1,
+                team2,
+                gameTime,
+                sport
+            };
+
+            fetch("https://example.com/api/publishGame", { // Replace with your backend API
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(gameData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Game published successfully!");
+                } else {
+                    throw new Error("Failed to publish the game.");
+                }
+            })
+            .catch(error => alert(error.message));
+        } else {
+            alert("Please fill out all fields.");
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
