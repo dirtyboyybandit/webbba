@@ -98,17 +98,16 @@
     </div>
 
     <script>
-        // When the page loads, check if the user has logged in
+        // When the page loads, check if the school selection has been made
         window.onload = function() {
-            // Check if the user has logged in by verifying the login status stored in localStorage
-            if (localStorage.getItem('userLoggedIn') === 'true') {
-                // Hide the "Create a Game" form if the user is logged in
-                document.getElementById('createGameForm').style.display = 'none';
-                loadPublishedGames();  // Show only published games for logged-in users
+            // If the user has selected their school (from schoolSelection.html), hide the "Create a Game" form
+            if (localStorage.getItem('schoolSelected') === 'true') {
+                document.getElementById('createGameForm').style.display = 'none'; // Hide create game section
+                loadPublishedGames(); // Show only published games
             } else {
-                // Show the "Create a Game" form if the user is NOT logged in
+                // Show the "Create a Game" form if school has not been selected
                 document.getElementById('createGameForm').style.display = 'block';
-                loadPublishedGames();  // Show published games as well
+                loadPublishedGames();  // Load published games for users who haven't selected a school
             }
         }
 
@@ -130,7 +129,7 @@
             }
         }
 
-        // Function to load and display published games for users
+        // Function to load and display published games for users who can't create games
         function loadPublishedGames() {
             // Here you would dynamically display the list of games (this is just an example)
             const games = [
