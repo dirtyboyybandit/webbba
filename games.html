@@ -32,6 +32,9 @@
         .game-item {
             padding: 15px;
             border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .game-item:last-child {
@@ -47,6 +50,19 @@
             margin-top: 5px;
             font-size: 0.9rem;
             color: #555;
+        }
+
+        .bet-button {
+            background-color: #FFD700;
+            color: #800000;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .bet-button:hover {
+            background-color: #FFB900;
         }
     </style>
 </head>
@@ -66,13 +82,20 @@
         } else {
             gameList.innerHTML = games.map(game => `
                 <div class="game-item">
-                    <strong>${game.team1} vs. ${game.team2}</strong>
-                    <span>Sport: ${game.sport}</span>
-                    <span>Date: ${game.date}</span>
-                    <span>Time: ${game.time}</span>
+                    <div>
+                        <strong>${game.team1} vs. ${game.team2}</strong>
+                        <span>Sport: ${game.sport}</span>
+                        <span>Date: ${game.date}</span>
+                        <span>Time: ${game.time}</span>
+                    </div>
+                    <button class="bet-button" onclick="goToBetsPage()">Bet Now</button>
                 </div>
             `).join('');
         }
+    }
+
+    function goToBetsPage() {
+        window.location.href = "bets.html";
     }
 
     window.onload = loadGames;
