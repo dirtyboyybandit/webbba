@@ -12,141 +12,129 @@
             margin: 0;
             padding: 0;
             color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2 {
+            text-align: center;
+            font-weight: 600;
         }
 
         h1 {
             font-size: 3rem;
+            margin-top: 40px;
+            text-transform: uppercase;
             color: #FFD700;
-            margin-bottom: 20px;
         }
 
-        .form-container {
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            color: #FFD700;
+        }
+
+        .login-container {
             text-align: center;
-            width: 100%;
-            max-width: 400px;
+            margin-top: 40px;
         }
 
-        .form-container input, .form-container button {
-            font-size: 1rem;
-            padding: 10px;
-            margin: 10px 0;
-            width: 100%;
+        .login-container input {
+            padding: 15px;
+            font-size: 18px;
             border: none;
             border-radius: 5px;
-        }
-
-        .form-container input {
+            width: 80%;
+            margin-bottom: 20px;
             background-color: #fff;
             color: #800000;
         }
 
-        .form-container button {
+        .login-container button {
+            padding: 12px 30px;
+            font-size: 18px;
+            border: none;
             background-color: #FFD700;
             color: #800000;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        .form-container button:hover {
+        .login-container button:hover {
             background-color: #FFB900;
         }
 
-        #arrow {
-            display: none;
-            margin-top: 20px;
-            color: #FFD700;
-            font-size: 2rem;
+        .special-code {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .special-code input {
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            width: 80%;
+            margin-bottom: 20px;
+            background-color: #fff;
+            color: #800000;
+        }
+
+        .special-code button {
+            padding: 12px 30px;
+            font-size: 18px;
+            border: none;
+            background-color: #FFD700;
+            color: #800000;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .special-code button:hover {
+            background-color: #FFB900;
         }
     </style>
 </head>
 <body>
+
     <h1>Login</h1>
-    <div class="form-container">
-        <input type="text" id="username" placeholder="Enter Username" />
-        <input type="password" id="password" placeholder="Enter Password" />
+    <h2>Please enter your credentials</h2>
+
+    <div class="login-container">
+        <input type="text" id="username" placeholder="Enter your username">
+        <input type="password" id="password" placeholder="Enter your password">
         <button onclick="login()">Login</button>
     </div>
-    <div class="form-container">
-        <input type="text" id="privilegeCode" placeholder="Enter Privilege Code" />
-        <button onclick="enterCode()">Enter Code</button>
+
+    <div class="special-code">
+        <input type="text" id="specialCode" placeholder="Enter special code">
+        <button onclick="checkSpecialCode()">Submit Code</button>
     </div>
-    <div id="arrow" onclick="goToGames()">→</div>
 
     <script>
-        const specialCode = "2273";
-
         function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
             if (username && password) {
-                alert('Login successful!');
-                localStorage.setItem('isAdmin', 'false'); // Regular user
-                localStorage.removeItem('privilegeCode'); // Remove any special code
-                window.location.href = "schoolSelection.html"; // Proceed to school selection
+                localStorage.setItem('username', username);
+                window.location.href = "schoolSelection.html";
             } else {
-                alert('Please enter both username and password.');
+                alert("Please enter both username and password.");
             }
         }
 
-        function enterCode() {
-            const enteredCode = document.getElementById('privilegeCode').value.trim();
-            if (enteredCode === specialCode) {
-                document.getElementById('arrow').style.display = "block";
-                localStorage.setItem('isAdmin', 'true'); // Special admin privileges
-                localStorage.setItem('privilegeCode', specialCode); // Store the special code
-                alert('Special Privileges Activated!');
-                window.location.href = "gameCreation.html"; // Redirect to game creation page
+        function checkSpecialCode() {
+            const specialCode = document.getElementById('specialCode').value;
+            const storedCode = localStorage.getItem('specialCode');
+
+            if (specialCode === storedCode) {
+                window.location.href = "admin.html"; // Admin page or any restricted access page
             } else {
-                alert('Invalid code!');
-                localStorage.removeItem('isAdmin');
-                localStorage.removeItem('privilegeCode');
+                alert("Invalid special code.");
             }
         }
-
-        function goToGames() {
-            window.location.href = "games.html";
-        }
-
-        // Add functionality to trigger the login function when pressing the Enter key
-        document.getElementById('privilegeCode').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                enterCode();
-            }
-        });
-
-        // Add functionality to trigger the login function when pressing the Enter key
-        document.getElementById('password').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                login();
-            }
-        });
-
-    </script>
-
-    <div id="userCount" style="position: absolute; top: 10px; right: 10px; color: black; font-size: 18px;">
-        Users Online: 0
-    </div>
-
-    <script>
-        function updateUserCount(isEntering) {
-            fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec', {
-                method: 'GET',
-                params: { isEntering }
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("userCount").innerText = "Users Online: " + data;
-            });
-        }
-
-        window.onload = () => updateUserCount(true); // User entered
-        window.onbeforeunload = () => updateUserCount(false); // User is leaving
     </script>
 </body>
 </html>

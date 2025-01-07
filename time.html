@@ -35,18 +35,18 @@
 
     <script>
         function updateUserCount(isEntering) {
-            fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec', {
-                method: 'GET',
-                params: { isEntering }
-            })
+            fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec?' + new URLSearchParams({ isEntering }))
             .then(response => response.text())
             .then(data => {
                 document.getElementById("userCount").innerText = "Users Online: " + data;
+            })
+            .catch(error => {
+                console.error('Error fetching user count:', error);
             });
         }
 
         window.onload = () => updateUserCount(true); // User entered
-        window.onbeforeunload = () => updateUserCount(false); // User is leaving
+        window.onbeforeunload = () => updateUserCount(false); // User leaving
     </script>
 </body>
 </html>

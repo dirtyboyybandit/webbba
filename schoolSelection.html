@@ -87,29 +87,7 @@
     <div class="school-selection-container">
         <select id="schoolDropdown">
             <option value="" disabled selected>Select a school</option>
-            <option value="Albert Einstein High School">Albert Einstein High School</option>
-            <option value="B-CC High School">Bethesda-Chevy Chase High School</option>
-            <option value="Blake High School">Blake High School</option>
-            <option value="Clarksburg High School">Clarksburg High School</option>
-            <option value="Damascus High School">Damascus High School</option>
-            <option value="Einstein High School">Einstein High School</option>
-            <option value="Gaithersburg High School">Gaithersburg High School</option>
-            <option value="Blair High School">Montgomery Blair High School</option>
-            <option value="Magruder High School">Magruder High School</option>
-            <option value="Paint Branch High School">Paint Branch High School</option>
-            <option value="Richard Montgomery High School">Richard Montgomery High School</option>
-            <option value="Rockville High School">Rockville High School</option>
-            <option value="Sherwood High School">Sherwood High School</option>
-            <option value="Springbrook High School">Springbrook High School</option>
-            <option value="Wheaton High School">Wheaton High School</option>
-            <option value="Walter Johnson High School">Walter Johnson High School</option>
-            <option value="Jesse Boyd High School">Jesse Boyd High School</option>
-            <option value="Northwood High School">Northwood High School</option>
-            <option value="Seneca Valley High School">Seneca Valley High School</option>
-            <option value="Watkins Mill High School">Watkins Mill High School</option>
-            <option value="John F. Kennedy High School">John F. Kennedy High School</option>
-            <option value="Seneca Valley High School">Seneca Valley High School</option>
-            <option value="Wootton High School">Wootton High School</option>
+            <!-- School options -->
         </select>
 
         <button onclick="goToGameSelection()">Select School</button>
@@ -126,26 +104,32 @@
                 alert("Please select a school.");
             }
         }
+
+        window.onload = () => {
+            const selectedSchool = localStorage.getItem('selectedSchool');
+            if (selectedSchool) {
+                document.getElementById('schoolDropdown').value = selectedSchool;
+            }
+            updateUserCount(true); // User entered
+        };
+
+        window.onbeforeunload = () => updateUserCount(false); // User is leaving
+
+        function updateUserCount(isEntering) {
+            fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec?' + new URLSearchParams({ isEntering }))
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("userCount").innerText = "Users Online: " + data;
+            })
+            .catch(error => {
+                console.error('Error fetching user count:', error);
+            });
+        }
     </script>
 
     <div id="userCount" style="position: absolute; top: 10px; right: 10px; color: black; font-size: 18px;">
         Users Online: 0
     </div>
 
-    <script>
-        function updateUserCount(isEntering) {
-            fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec', {
-                method: 'GET',
-                params: { isEntering }
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("userCount").innerText = "Users Online: " + data;
-            });
-        }
-
-        window.onload = () => updateUserCount(true); // User entered
-        window.onbeforeunload = () => updateUserCount(false); // User is leaving
-    </script>
 </body>
 </html>
