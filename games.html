@@ -96,6 +96,21 @@
         .delete-btn:hover {
             background-color: #FF6347; /* Lighter red */
         }
+
+        .bet-btn {
+            padding: 12px 30px;
+            font-size: 18px;
+            border: none;
+            background-color: #28a745; /* Green */
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .bet-btn:hover {
+            background-color: #218838; /* Darker green */
+        }
     </style>
 </head>
 <body>
@@ -117,17 +132,16 @@
 
     <script>
         window.onload = function () {
-            const hasPrivileges = localStorage.getItem('userCode') === '2273';
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; // Check if the user is logged in
             const createGameForm = document.getElementById('createGameForm');
 
-            // Show the "Create Game" section only if the user has privileges
-            if (hasPrivileges) {
-                createGameForm.style.display = 'block';
-            } else {
-                createGameForm.style.display = 'none';
+            // Show the "Create Game" section only if the user is an admin
+            if (isLoggedIn) {
+                loadPublishedGames();
             }
 
-            loadPublishedGames();
+            // If user is logged in, show the games with the "Bet Now" button
+            loadPublishedGames(isLoggedIn);
         };
 
         function createGame() {
@@ -155,12 +169,12 @@
             localStorage.setItem('games', JSON.stringify(games));
         }
 
-        function loadPublishedGames() {
+        function loadPublishedGames(isLoggedIn) {
             const games = JSON.parse(localStorage.getItem('games')) || [];
-            games.forEach(game => appendGameToList(game));
+            games.forEach(game => appendGameToList(game, isLoggedIn));
         }
 
-        function appendGameToList(game) {
+        function appendGameToList(game, isLoggedIn) {
             const gameList = document.getElementById('gameList');
             const gameDiv = document.createElement('div');
             gameDiv.className = 'game';
@@ -171,6 +185,7 @@
                     <i>${game.sport}</i> - ${new Date(game.gameTime).toLocaleString()}
                 </div>
                 <button class="delete-btn" onclick="deleteGame(this)">X</button>
+                ${isLoggedIn ? `<button class="bet-btn" onclick="placeBet()">Bet Now</button>` : ''}
             `;
             gameList.appendChild(gameDiv);
         }
@@ -182,6 +197,10 @@
             games.splice(gameIndex, 1);
             localStorage.setItem('games', JSON.stringify(games));
             gameDiv.remove();
+        }
+
+        function placeBet() {
+            window.location.href = "bets.html";
         }
     </script>
 </body>
