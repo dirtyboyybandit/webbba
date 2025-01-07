@@ -96,21 +96,6 @@
         .delete-btn:hover {
             background-color: #FF6347; /* Lighter red */
         }
-
-        .bet-btn {
-            padding: 12px 30px;
-            font-size: 18px;
-            border: none;
-            background-color: #28a745; /* Green */
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .bet-btn:hover {
-            background-color: #218838; /* Darker green */
-        }
     </style>
 </head>
 <body>
@@ -132,16 +117,15 @@
 
     <script>
         window.onload = function () {
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; // Check if the user is logged in
+            const isAdmin = localStorage.getItem('isAdmin');
             const createGameForm = document.getElementById('createGameForm');
 
             // Show the "Create Game" section only if the user is an admin
-            if (isLoggedIn) {
-                loadPublishedGames();
+            if (isAdmin === 'true') {
+                createGameForm.style.display = 'block';
             }
 
-            // If user is logged in, show the games with the "Bet Now" button
-            loadPublishedGames(isLoggedIn);
+            loadPublishedGames();
         };
 
         function createGame() {
@@ -169,14 +153,15 @@
             localStorage.setItem('games', JSON.stringify(games));
         }
 
-        function loadPublishedGames(isLoggedIn) {
+        function loadPublishedGames() {
             const games = JSON.parse(localStorage.getItem('games')) || [];
-            games.forEach(game => appendGameToList(game, isLoggedIn));
+            games.forEach(game => appendGameToList(game));
         }
 
-        function appendGameToList(game, isLoggedIn) {
+        function appendGameToList(game) {
             const gameList = document.getElementById('gameList');
             const gameDiv = document.createElement('div');
+            const isLoggedIn = localStorage.getItem('isAdmin') === 'true' || localStorage.getItem('isAdmin') === 'false'; // Check if user is logged in
             gameDiv.className = 'game';
             gameDiv.innerHTML = `
                 <div>
@@ -184,23 +169,41 @@
                     <br>
                     <i>${game.sport}</i> - ${new Date(game.gameTime).toLocaleString()}
                 </div>
-                <button class="delete-btn" onclick="deleteGame(this)">X</button>
-                ${isLoggedIn ? `<button class="bet-btn" onclick="placeBet()">Bet Now</button>` : ''}
             `;
+
+            // Add "Bet Now" button for logged-in users
+            if (isLoggedIn) {
+                const betNowButton = document.createElement('button');
+                betNowButton.textContent = 'Bet Now';
+                betNowButton.onclick = function() {
+                    window.location.href = 'bets.html';
+                };
+                gameDiv.appendChild(betNowButton);
+            }
+
+            // Add "Delete" button only for admin users
+            const isAdmin = localStorage.getItem('isAdmin');
+            if (isAdmin === 'true') {
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'delete-btn';
+                deleteButton.textContent = 'X';
+                deleteButton.onclick = function () {
+                    deleteGame(gameDiv, game);
+                };
+                gameDiv.appendChild(deleteButton);
+            }
+
             gameList.appendChild(gameDiv);
         }
 
-        function deleteGame(button) {
-            const gameDiv = button.parentElement;
-            const gameIndex = Array.from(gameDiv.parentElement.children).indexOf(gameDiv);
+        function deleteGame(gameDiv, game) {
             const games = JSON.parse(localStorage.getItem('games')) || [];
-            games.splice(gameIndex, 1);
-            localStorage.setItem('games', JSON.stringify(games));
-            gameDiv.remove();
-        }
-
-        function placeBet() {
-            window.location.href = "bets.html";
+            const gameIndex = games.indexOf(game);
+            if (gameIndex > -1) {
+                games.splice(gameIndex, 1);
+                localStorage.setItem('games', JSON.stringify(games));
+                gameDiv.remove();
+            }
         }
     </script>
 </body>
