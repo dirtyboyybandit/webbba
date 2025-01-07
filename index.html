@@ -88,7 +88,6 @@
             font-size: 16px;
         }
 
-        /* Arrow style */
         .arrow {
             position: fixed;
             top: 20px;
@@ -146,7 +145,6 @@
     <script>
         const specialCode = "2273";
 
-        // Show/Hide password toggle function
         function togglePassword() {
             const passwordField = document.getElementById('password');
             const toggleButton = document.getElementById('togglePassword');
@@ -173,18 +171,17 @@
         }
 
         function enterCode() {
-            const enteredCode = document.getElementById('privilegeCode').value.trim(); // Ensure no leading/trailing spaces
+            const enteredCode = document.getElementById('privilegeCode').value.trim();
             if (enteredCode === specialCode) {
-                document.getElementById('arrow').style.display = "block"; // Show the arrow
+                document.getElementById('arrow').style.display = "block";
                 localStorage.setItem('userCode', '2273'); // Store user as admin
                 alert('Special Privileges Activated!');
             } else {
-                localStorage.removeItem('userCode'); // Clear any stored admin privileges
+                localStorage.removeItem('userCode');
                 alert('Invalid code!');
             }
         }
 
-        // Show the arrow only after the correct code has been entered
         function goToGames() {
             window.location.href = "games.html";
         }

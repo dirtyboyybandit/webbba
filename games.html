@@ -3,148 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Your Game to Bet On</title>
+    <title>Games</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f9;
-            padding: 20px;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .game-card {
-            width: 30%;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            padding: 10px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .game-card img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-        .game-card h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-        .game-card p {
-            font-size: 16px;
-            color: #555;
-        }
-        .game-card .bet-now-btn {
-            margin-top: 10px;
-            padding: 10px;
+            font-family: 'Poppins', sans-serif;
             background-color: #800000; /* Maroon */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .game-card .bet-now-btn:hover {
-            background-color: #555;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            overflow-x: hidden;
         }
 
-        /* Game creation form */
-        .game-creation-form {
-            margin-top: 20px;
-            display: none; /* Hidden by default, shown for admin */
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            color: #FFD700; /* Gold */
+            margin-top: 40px;
         }
-        .game-creation-form input, .game-creation-form button {
-            margin: 10px 0;
+
+        .game-creation-form, .published-games {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .input-group input {
             padding: 10px;
-            width: 100%;
             font-size: 16px;
+            margin-bottom: 20px;
+            width: 80%;
+        }
+
+        .input-group button {
+            padding: 12px 30px;
+            font-size: 18px;
+            background-color: #FFD700;
+            border: none;
+            color: #800000;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .input-group button:hover {
+            background-color: #FFB900;
+        }
+
+        .bet-button {
+            background-color: #28a745;  /* Green */
+        }
+
+        .bet-button:hover {
+            background-color: #218838;
+        }
+
+        .arrow {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            color: #FFD700;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-<h1>Select Your Game to Bet On</h1>
+    <h1>Games</h1>
 
-<div class="container" id="game-container">
-    <!-- Existing games will go here -->
-    <div class="game-card">
-        <h3>Paint Branch vs. Rockville</h3>
-        <p>Football - 7:00 PM</p>
-        <button class="bet-now-btn" onclick="placeBet('Paint Branch vs Rockville')">Bet Now</button>
+    <div id="game-creation" class="game-creation-form" style="display: none;">
+        <h2>Create a New Game</h2>
+        <div class="input-group">
+            <input type="text" id="school1" placeholder="School 1" />
+            <input type="text" id="school2" placeholder="School 2" />
+            <input type="text" id="sport" placeholder="Sport" />
+            <input type="datetime-local" id="game-time" />
+            <button onclick="createGame()">Create Game</button>
+        </div>
     </div>
 
-    <div class="game-card">
-        <h3>Wootton vs. Blair</h3>
-        <p>Basketball - 6:30 PM</p>
-        <button class="bet-now-btn" onclick="placeBet('Wootton vs Blair')">Bet Now</button>
+    <div id="published-games" class="published-games" style="display: none;">
+        <h2>Available Games</h2>
+        <div id="game-list"></div>
     </div>
-</div>
 
-<!-- Game creation form (for admin) -->
-<div class="game-creation-form" id="game-creation-form">
-    <h2>Create a New Game</h2>
-    <label for="home-team">Home Team:</label>
-    <input type="text" id="home-team" placeholder="Enter Home Team Name">
-    <label for="away-team">Away Team:</label>
-    <input type="text" id="away-team" placeholder="Enter Away Team Name">
-    <label for="sport">Sport:</label>
-    <input type="text" id="sport" placeholder="Enter Sport">
-    <label for="game-time">Game Time:</label>
-    <input type="text" id="game-time" placeholder="Enter Game Time (e.g., 7:00 PM)">
-    <button onclick="createGame()">Create Game</button>
-</div>
+    <div class="arrow" onclick="goBack()">⬅</div>
 
-<script>
-    // Check for special privileges
-    const hasSpecialPrivileges = localStorage.getItem('specialPrivileges') === 'true';
-
-    // Only show the game creation form if the user has special privileges
-    if (hasSpecialPrivileges) {
-        document.getElementById('game-creation-form').style.display = 'block';
-    }
-
-    // Function to create a new game
-    function createGame() {
-        const homeTeam = document.getElementById('home-team').value;
-        const awayTeam = document.getElementById('away-team').value;
-        const sport = document.getElementById('sport').value;
-        const gameTime = document.getElementById('game-time').value;
-
-        if (homeTeam && awayTeam && sport && gameTime) {
-            // Create a new game card
-            const newGameCard = document.createElement('div');
-            newGameCard.classList.add('game-card');
-
-            // Add game details to the card
-            newGameCard.innerHTML = `
-                <h3>${homeTeam} vs. ${awayTeam}</h3>
-                <p>${sport} - ${gameTime}</p>
-                <button class="bet-now-btn" onclick="placeBet('${homeTeam} vs. ${awayTeam}')">Bet Now</button>
-            `;
-
-            // Append the new game card to the container
-            document.getElementById('game-container').appendChild(newGameCard);
-
-            // Clear the form inputs
-            document.getElementById('home-team').value = '';
-            document.getElementById('away-team').value = '';
-            document.getElementById('sport').value = '';
-            document.getElementById('game-time').value = '';
-        } else {
-            alert("Please fill in all fields to create a game.");
+    <script>
+        window.onload = function() {
+            if (localStorage.getItem('userCode') === '2273') {
+                // Show the game creation form for admin
+                document.getElementById('game-creation').style.display = 'block';
+            } else {
+                // Show the list of published games for regular users
+                document.getElementById('published-games').style.display = 'block';
+                loadPublishedGames();
+            }
         }
-    }
 
-    function placeBet(game) {
-        alert("You selected the game: " + game + ". Redirecting to the betting page.");
-        window.location.href = "bets.html";
-    }
-</script>
+        function createGame() {
+            const school1 = document.getElementById('school1').value;
+            const school2 = document.getElementById('school2').value;
+            const sport = document.getElementById('sport').value;
+            const gameTime = document.getElementById('game-time').value;
+
+            if (school1 && school2 && sport && gameTime) {
+                const newGame = {
+                    school1, school2, sport, gameTime
+                };
+
+                let games = JSON.parse(localStorage.getItem('games')) || [];
+                games.push(newGame);
+                localStorage.setItem('games', JSON.stringify(games));
+
+                alert('Game created successfully!');
+                loadPublishedGames();
+            } else {
+                alert('Please fill all fields');
+            }
+        }
+
+        function loadPublishedGames() {
+            const games = JSON.parse(localStorage.getItem('games')) || [];
+            const gameListContainer = document.getElementById('game-list');
+            gameListContainer.innerHTML = '';
+
+            games.forEach(game => {
+                const gameElement = document.createElement('div');
+                gameElement.innerHTML = `
+                    <h3>${game.school1} vs ${game.school2} (${game.sport})</h3>
+                    <p>Time: ${game.gameTime}</p>
+                    <button class="bet-button" onclick="placeBet()">Bet Now</button>
+                `;
+                gameListContainer.appendChild(gameElement);
+            });
+        }
+
+        function placeBet() {
+            window.location.href = "bets.html"; // Redirect to betting page
+        }
+
+        function goBack() {
+            window.history.back(); // Go back to the previous page
+        }
+    </script>
 
 </body>
 </html>
