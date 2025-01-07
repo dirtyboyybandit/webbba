@@ -67,27 +67,6 @@
             background-color: #FFB900;
         }
 
-        /* Arrow Styles */
-        .arrow {
-            position: fixed;
-            top: 20px;
-            left: 20px; /* Position the back arrow to the left */
-            font-size: 30px;
-            color: #FFD700; /* Same gold as on the index.html */
-            cursor: pointer;
-            display: none; /* Initially hidden */
-        }
-
-        .forward-arrow {
-            position: fixed;
-            top: 20px;
-            right: 20px; /* Forward arrow on the right */
-            font-size: 30px;
-            color: #FFD700;
-            cursor: pointer;
-            display: none; /* Initially hidden */
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             h1 {
@@ -140,31 +119,7 @@
         <button onclick="goToGameSelection()">Select School</button>
     </div>
 
-    <!-- Back Arrow -->
-    <div id="backArrow" class="arrow" onclick="goBack()">⬅</div>
-
-    <!-- Forward Arrow -->
-    <div id="forwardArrow" class="forward-arrow" onclick="goToGames()">➡</div>
-
     <script>
-        // If the code is already entered, ensure arrows are visible when the page loads
-        window.onload = function() {
-            if (localStorage.getItem('specialCodeEntered') === 'true') {
-                document.getElementById('backArrow').style.display = 'block';  // Show the back arrow
-                document.getElementById('forwardArrow').style.display = 'block';  // Show the forward arrow
-            }
-        }
-
-        // Function to handle back arrow click
-        function goBack() {
-            window.history.back();  // Go to the previous page
-        }
-
-        // Function to handle forward arrow click
-        function goToGames() {
-            window.location.href = "games.html";  // Go to the games page
-        }
-
         // Handle school selection
         function goToGameSelection() {
             const selectedSchool = document.getElementById('schoolDropdown').value;
