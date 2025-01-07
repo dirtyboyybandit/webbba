@@ -131,6 +131,43 @@
             }
         }
     </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time User Count</title>
+</head>
+<body>
+    <h1>Welcome to the Website</h1>
+    <p>Current Users Online: <span id="userCount">Loading...</span></p>
+
+    <script>
+        // Initialize user count in localStorage if it doesn't exist
+        if (localStorage.getItem('userCount') === null) {
+            localStorage.setItem('userCount', 0);
+        }
+
+        // Update user count on page load
+        function updateUserCount() {
+            let count = parseInt(localStorage.getItem('userCount'));
+            count += 1;
+            localStorage.setItem('userCount', count);
+            document.getElementById('userCount').innerText = count;
+        }
+
+        // Update user count when user leaves the page
+        window.onbeforeunload = function() {
+            let count = parseInt(localStorage.getItem('userCount'));
+            count -= 1;
+            localStorage.setItem('userCount', count);
+        };
+
+        // Initialize the count when the page loads
+        updateUserCount();
+    </script>
+</body>
+</html>
 
 </body>
 </html>
