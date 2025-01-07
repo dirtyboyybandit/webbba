@@ -54,7 +54,7 @@
             font-size: 30px;
             color: #FFD700; /* Gold */
             cursor: pointer;
-            display: none; /* Initially hidden */
+            display: block; /* Always show */
         }
     </style>
 </head>
@@ -87,14 +87,9 @@
     </div>
 
     <script>
-        // Display the left arrow if needed
-        window.onload = function() {
-            document.getElementById('leftArrow').style.display = 'block'; // Show the left arrow
-        }
-
-        // Left arrow click function (Navigate back to the previous page)
+        // Left arrow click function (Navigate back to games.html)
         function goBack() {
-            window.history.back();  // Go to the previous page
+            window.location.href = 'games.html';  // Navigate to games.html
         }
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -162,63 +157,6 @@
             }
         });
     </script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-time User Count</title>
-</head>
-<body>
-    <h1>Welcome to the Website</h1>
-    <p>Current Users Online: <span id="userCount">Loading...</span></p>
-
-    <script>
-        // Initialize user count in localStorage if it doesn't exist
-        if (localStorage.getItem('userCount') === null) {
-            localStorage.setItem('userCount', 0);
-        }
-
-        // Update user count on page load
-        function updateUserCount() {
-            let count = parseInt(localStorage.getItem('userCount'));
-            count += 1;
-            localStorage.setItem('userCount', count);
-            document.getElementById('userCount').innerText = count;
-        }
-
-        // Update user count when user leaves the page
-        window.onbeforeunload = function() {
-            let count = parseInt(localStorage.getItem('userCount'));
-            count -= 1;
-            localStorage.setItem('userCount', count);
-        };
-
-        // Initialize the count when the page loads
-        updateUserCount();
-    </script>
-</body>
-  <div id="userCount" style="position: absolute; top: 10px; right: 10px; color: black; font-size: 18px;">
-    Users Online: 0
-</div>
-
-</html>
-<script>
-    function updateUserCount(isEntering) {
-        fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec', {
-            method: 'GET',
-            params: { isEntering }
-        })
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("userCount").innerText = "Users Online: " + data;
-        });
-    }
-
-    // To increment the user count when a user enters or exits the page
-    window.onload = () => updateUserCount(true); // User entered
-    window.onbeforeunload = () => updateUserCount(false); // User is leaving
-</script>
 
 </body>
 </html>
