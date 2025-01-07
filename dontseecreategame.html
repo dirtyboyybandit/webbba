@@ -220,7 +220,27 @@
         updateUserCount();
     </script>
 </body>
+  <div id="userCount" style="position: absolute; top: 10px; right: 10px; color: black; font-size: 18px;">
+    Users Online: 0
+</div>
+
 </html>
+<script>
+    function updateUserCount(isEntering) {
+        fetch('https://script.google.com/macros/s/AKfycbxSC_rJIm1OK9xdW233zg9QfWa7_-Avgfc40TWPJ9NVvVau7HwK2igQgUo9s7LMPSVKmA/exec', {
+            method: 'GET',
+            params: { isEntering }
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("userCount").innerText = "Users Online: " + data;
+        });
+    }
+
+    // To increment the user count when a user enters or exits the page
+    window.onload = () => updateUserCount(true); // User entered
+    window.onbeforeunload = () => updateUserCount(false); // User is leaving
+</script>
 
 </body>
 </html>
