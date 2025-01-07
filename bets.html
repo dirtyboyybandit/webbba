@@ -89,7 +89,6 @@
     <script>
         // Display the left arrow if needed
         window.onload = function() {
-            // You can add any condition here to show the left arrow
             document.getElementById('leftArrow').style.display = 'block'; // Show the left arrow
         }
 
@@ -132,7 +131,6 @@
             if (error) {
                 alert(error.message);
             } else {
-                // Send the token to your server for payment processing
                 fetch('/charge', {
                     method: 'POST',
                     body: JSON.stringify({
@@ -152,8 +150,7 @@
                 .then(data => {
                     if (data.success) {
                         alert('Bet placed successfully!');
-                        // Redirect to a confirmation page
-                        window.location.href = 'confirmation.html'; // Placeholder for confirmation page
+                        window.location.href = 'confirmation.html'; 
                     } else {
                         alert('Payment failed. Please try again.');
                     }
